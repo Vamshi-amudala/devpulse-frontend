@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import Features from "../components/Features";
 import IdeasStream from "../components/IdeaFlowSection";
 import CTA from "../components/CTA";
@@ -17,9 +16,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="bg-black text-white font-sans overflow-x-hidden">
-
-      <Navbar />
+    <div className="pt-10">
 
       {/* HERO */}
       <motion.section
@@ -33,7 +30,7 @@ const HomePage = () => {
         >
 
           <span className="text-emerald-400 border border-emerald-400/30 px-4 py-1.5 rounded-full text-sm mb-8 inline-block">
-            ✨ Welcome to DevPulse
+            Welcome to DevPulse
           </span>
 
           <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-8">
@@ -56,13 +53,18 @@ const HomePage = () => {
 
         </motion.div>
 
-        <div className="flex-1 max-w-[500px] opacity-40">
+        <motion.div
+          className="flex-1 max-w-[500px] opacity-40"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 3 }}
+        >
           <img
             src="/images/home-boy.png"
             alt="developer"
             className="w-full drop-shadow-[0_0_55px_rgba(34,197,94,0.4)]"
           />
-        </div>
+        </motion.div>
 
       </motion.section>
 
