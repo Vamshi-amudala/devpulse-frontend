@@ -8,24 +8,30 @@ const Features = () => {
 
             <div className="grid md:grid-cols-3 gap-10">
 
-                <div className="bg-slate-900/40 border border-emerald-500/10 p-8 rounded-3xl">
-                    <h3 className="text-xl font-bold mb-4">💡 Share Ideas</h3>
-                    <p className="text-slate-400">
-                        Post system design ideas and solutions for complex problems.
+                <div className="bg-slate-900/40 border border-white/5 p-8 rounded-3xl hover:border-emerald-500/30 transition-all group">
+                    <h3 className="text-xl font-semibold mb-4 text-white group-hover:text-emerald-400 transition-colors">
+                        Share what you’re building
+                    </h3>
+                    <p className="text-slate-400 leading-relaxed">
+                        Document your ideas, approaches, and experiments. Build a public trail of how you think and solve problems.
                     </p>
                 </div>
 
-                <div className="bg-slate-900/40 border border-emerald-500/10 p-8 rounded-3xl">
-                    <h3 className="text-xl font-bold mb-4">🧠 Learn Architecture</h3>
-                    <p className="text-slate-400">
-                        Explore scalable architectures used in real systems.
+                <div className="bg-slate-900/40 border border-white/5 p-8 rounded-3xl hover:border-emerald-500/30 transition-all group">
+                    <h3 className="text-xl font-semibold mb-4 text-white group-hover:text-emerald-400 transition-colors">
+                        Learn from real implementations
+                    </h3>
+                    <p className="text-slate-400 leading-relaxed">
+                        Explore how others approach system design, scalability, and architecture in practical, real-world scenarios.
                     </p>
                 </div>
 
-                <div className="bg-slate-900/40 border border-emerald-500/10 p-8 rounded-3xl">
-                    <h3 className="text-xl font-bold mb-4">🗳 Community Voting</h3>
-                    <p className="text-slate-400">
-                        Discover the best ideas through community voting.
+                <div className="bg-slate-900/40 border border-white/5 p-8 rounded-3xl hover:border-emerald-500/30 transition-all group">
+                    <h3 className="text-xl font-semibold mb-4 text-white group-hover:text-emerald-400 transition-colors">
+                        Discover what stands out
+                    </h3>
+                    <p className="text-slate-400 leading-relaxed">
+                        Surface the most impactful ideas through community feedback and voting, not just visibility.
                     </p>
                 </div>
 
