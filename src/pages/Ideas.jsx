@@ -479,7 +479,7 @@ const Ideas = () => {
                             {user ? "Add Idea" : "Share an Idea"}
                         </motion.button>
                     </header>
-                    )
+
 
                     {/* ── stats bar ─────────────────────────────────
                     <div className="mb-8 grid gap-4 md:grid-cols-3">
