@@ -94,6 +94,10 @@ const NavBar = ({ animationDelay = 0.3 }) => {
           Ideas
         </NavLink>
 
+        <NavLink to="/trending-ideas" className={navLinkClass}>
+          Trending
+        </NavLink>
+
         <NavLink to="/about" className={navLinkClass}>
           About
         </NavLink>
@@ -101,6 +105,7 @@ const NavBar = ({ animationDelay = 0.3 }) => {
         <NavLink to="/contact" className={navLinkClass}>
           Contact
         </NavLink>
+
       </div>
 
       <div className="flex-1 flex justify-end items-center">

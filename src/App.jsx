@@ -8,8 +8,10 @@ import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import ResetPassword from "./pages/ResetPassword";
 import Implementation from "./pages/Implementation";
+import ImplementationDetail from "./pages/ImplementationDetail";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
+import Trending from "./pages/Trending";
 function App() {
   return (
     <Router>
@@ -21,12 +23,14 @@ function App() {
         <Route path="/ideas" element={<Ideas />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/trending-ideas" element={<Trending />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/ideas/:ideaId/implementations" element={<Implementation />} />
+        <Route path="/ideas/:ideaId/implementations/:implId" element={<ImplementationDetail />} />
       </Routes>
     </Router>
   );
