@@ -43,10 +43,10 @@ const Login = () => {
 
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
                 return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
             }).join(''));
-            
+
             const payload = JSON.parse(jsonPayload);
             const userRole = payload.role || ""; // ✅ NOW IT WORKS!
 
@@ -176,6 +176,16 @@ const Login = () => {
                                 </button>
                             </div>
                         </form>
+
+                        <p className="mt-6 text-center text-sm text-slate-400">
+                            Don't remember password? we got you.{" "}
+                            <Link
+                                to="/reset-password"
+                                className="font-bold text-white hover:text-emerald-400 transition-colors underline decoration-white/20 underline-offset-4 hover:decoration-emerald-400/50"
+                            >
+                                Reset it here
+                            </Link>
+                        </p>
 
                         <p className="mt-8 text-center text-sm text-slate-500">
                             Don’t have an account?{" "}

@@ -5,7 +5,7 @@
 
 @layer base {
     body {
-        @apply bg-black text-white font-sans overflow-x-hidden;
+        @apply bg-black text-white font-sans overflow-x-hidden overflow-y-scroll;
     }
 }
 

@@ -4,17 +4,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
-
-
 const Register = () => {
-
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         password: ""
-
     });
 
     const [loading, setLoading] = useState(false);
@@ -22,11 +18,19 @@ const Register = () => {
     const [success, setSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
+    const validatePassword = (password) => {
+        const regex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\S]{6,20}$/;
+        return regex.test(password);
+    };
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
+
+        if (error) setError(null);
     };
 
     const registerHandler = async (e) => {
@@ -37,6 +41,13 @@ const Register = () => {
             return;
         }
 
+        if (!validatePassword(formData.password)) {
+            setError(
+                "Password must be 6-20 characters and include uppercase, lowercase, number, and special character"
+            );
+            return;
+        }
+
         setLoading(true);
         setError(null);
         setSuccess(false);
@@ -44,7 +55,7 @@ const Register = () => {
         try {
             const API = import.meta.env.VITE_API_URL;
 
-            const response = await axios.post(`${API}/api/users/register`, formData);
+            await axios.post(`${API}/api/users/register`, formData);
 
             setSuccess(true);
 
@@ -52,18 +63,18 @@ const Register = () => {
                 navigate("/login");
             }, 2000);
         } catch (err) {
-
-            setError(err.response?.data?.message || err.message || "Registration failed. Please try again.");
+            setError(
+                err.response?.data?.message ||
+                err.message ||
+                "Registration failed. Please try again."
+            );
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
         <div className="relative flex min-h-screen bg-slate-950 text-sans overflow-hidden">
-
-            {/* FULL-SCREEN IMAGE WITH BLEND */}
-            {/* The slate-950 background + mix-blend-screen keeps the image colors rich and vibrant */}
             <div className="absolute inset-0 pointer-events-none">
                 <img
                     src="/images/bg-view.png"
@@ -73,7 +84,6 @@ const Register = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-0" />
             </div>
 
-            {/* LEFT SIDE - TEXT SHOWCASE */}
             <div className="hidden lg:flex flex-col justify-center flex-1 relative z-10 p-12 lg:p-20 pt-32">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -87,7 +97,9 @@ const Register = () => {
 
                     <h2 className="text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-6 drop-shadow-lg">
                         Architect <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">better systems.</span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">
+                            better systems.
+                        </span>
                     </h2>
 
                     <p className="text-slate-300 text-lg leading-relaxed drop-shadow-md">
@@ -96,10 +108,7 @@ const Register = () => {
                 </motion.div>
             </div>
 
-            {/* RIGHT SIDE - REGISTRATION FORM */}
-            {/* bg-black/85 gives a deep dark look with just a *slight* 15% view of the image underneath */}
             <div className="flex flex-col justify-center flex-[0.8] xl:flex-[0.7] w-full p-8 pt-32 sm:p-12 md:p-20 relative z-10 bg-black/85 backdrop-blur-xl border-l border-white/5 shadow-2xl">
-
                 <div className="w-full max-w-md mx-auto">
                     <motion.div
                         initial={{ opacity: 0, x: 30 }}
@@ -107,8 +116,12 @@ const Register = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <div className="mb-10 text-center lg:text-left">
-                            <h1 className="text-3xl font-extrabold text-white mb-3 tracking-tight">Create an account</h1>
-                            <p className="text-slate-400 text-sm">Join completely free and start exploring ideas today.</p>
+                            <h1 className="text-3xl font-extrabold text-white mb-3 tracking-tight">
+                                Create an account
+                            </h1>
+                            <p className="text-slate-400 text-sm">
+                                Join completely free and start exploring ideas today.
+                            </p>
                         </div>
 
                         {error && (
@@ -124,7 +137,6 @@ const Register = () => {
                         )}
 
                         <form className="space-y-5" onSubmit={registerHandler}>
-
                             <div className="space-y-4">
                                 <div className="group">
                                     <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 group-focus-within:text-emerald-400 transition-colors">
@@ -133,7 +145,6 @@ const Register = () => {
                                     <input
                                         type="text"
                                         name="name"
-
                                         value={formData.name}
                                         onChange={handleChange}
                                         placeholder="Alex Mercer"
@@ -176,9 +187,18 @@ const Register = () => {
                                             onClick={() => setShowPassword(!showPassword)}
                                             className="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400 hover:text-emerald-400 focus:outline-none transition-colors"
                                         >
-                                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                            {showPassword ? (
+                                                <EyeOff className="w-5 h-5" />
+                                            ) : (
+                                                <Eye className="w-5 h-5" />
+                                            )}
                                         </button>
                                     </div>
+
+                                    <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                                        Password must be 6-20 characters and include at least one uppercase letter,
+                                        one lowercase letter, one number, and one special character.
+                                    </p>
                                 </div>
                             </div>
 
@@ -186,7 +206,11 @@ const Register = () => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className={`w-full py-4 mt-2 font-extrabold text-black rounded-2xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] ${loading ? 'bg-emerald-700 cursor-not-allowed opacity-70' : 'bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98]'}`}>
+                                    className={`w-full py-4 mt-2 font-extrabold text-black rounded-2xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] ${loading
+                                            ? "bg-emerald-700 cursor-not-allowed opacity-70"
+                                            : "bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98]"
+                                        }`}
+                                >
                                     {loading ? "Registering..." : "Complete Registration"}
                                 </button>
                             </div>
@@ -194,17 +218,18 @@ const Register = () => {
 
                         <p className="mt-8 text-center text-sm text-slate-500">
                             Already have an account?{" "}
-                            <Link to="/login" className="font-bold text-white hover:text-emerald-400 transition-colors underline decoration-white/20 underline-offset-4 hover:decoration-emerald-400/50">
+                            <Link
+                                to="/login"
+                                className="font-bold text-white hover:text-emerald-400 transition-colors underline decoration-white/20 underline-offset-4 hover:decoration-emerald-400/50"
+                            >
                                 Log in instead
                             </Link>
                         </p>
-
                     </motion.div>
                 </div>
             </div>
-
         </div>
     );
-}
+};
 
 export default Register;

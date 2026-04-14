@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const IdeasStream = ({ title = "Ideas Stream" }) => {
+    const navigate = useNavigate();
 
     const [ideas, setIdeas] = useState([]);
     const [selectedIdea, setSelectedIdea] = useState(null);
@@ -83,10 +86,10 @@ const IdeasStream = ({ title = "Ideas Stream" }) => {
             </div>
 
             {/* MODAL */}
-            {/* MODAL */}
-            <AnimatePresence>
-                {selectedIdea && (
-                    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-6">
+            {typeof document !== "undefined" && createPortal(
+                <AnimatePresence>
+                    {selectedIdea && (
+                        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-6">
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -178,16 +181,21 @@ const IdeasStream = ({ title = "Ideas Stream" }) => {
                                 </p>
 
                                 <button
-                                    onClick={() => setSelectedIdea(null)}
-                                    className="rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-emerald-400"
+                                    onClick={() => {
+                                        navigate(`/ideas/${selectedIdea.id}/implementations`);
+                                        setSelectedIdea(null);
+                                    }}
+                                    className="rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-emerald-400 cursor-pointer"
                                 >
-                                    Done
+                                    Check Implementations
                                 </button>
                             </div>
                         </motion.div>
                     </div>
                 )}
-            </AnimatePresence>
+                </AnimatePresence>,
+                document.body
+            )}
 
         </section>
     );

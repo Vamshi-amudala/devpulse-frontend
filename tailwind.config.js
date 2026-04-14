@@ -5,6 +5,7 @@ export default {
     extend: {
       animation: {
         marquee: 'marquee 30s linear infinite',
+        slowspin: "spin 6s linear infinite"
       },
       keyframes: {
         marquee: {
