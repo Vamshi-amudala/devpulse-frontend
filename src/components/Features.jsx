@@ -1,12 +1,12 @@
 const Features = () => {
     return (
-        <section className="py-24 px-10 md:px-20 bg-black">
+        <section className="py-16 sm:py-24 px-5 sm:px-10 md:px-20 bg-black">
 
-            <h2 className="text-4xl font-bold text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-10 sm:mb-16">
                 Why <span className="text-emerald-500">DevPulse</span>
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-10">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-10">
 
                 <div className="bg-slate-900/40 border border-white/5 p-8 rounded-3xl hover:border-emerald-500/30 transition-all group">
                     <h3 className="text-xl font-semibold mb-4 text-white group-hover:text-emerald-400 transition-colors">

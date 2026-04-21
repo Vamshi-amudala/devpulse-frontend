@@ -108,7 +108,7 @@ const Implementation = () => {
                 />
             )}
 
-            <div className="relative z-10 container mx-auto px-6 pt-32 max-w-7xl">
+            <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-24 sm:pt-32 max-w-7xl">
                 {/* Header */}
                 <div className="mb-12">
                     <button
@@ -124,11 +124,12 @@ const Implementation = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-4">
-                            <h1 className="text-4xl md:text-5xl font-black text-white leading-tight tracking-tight drop-shadow-lg">
+                        <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between mb-4">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight drop-shadow-lg">
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">
                                     Implementations
-                                </span> for <br />
+                                </span>{" "}
+                                for{" "}
                                 {title}
                             </h1>
 
@@ -136,14 +137,14 @@ const Implementation = () => {
                                 whileHover={{ scale: 1.04 }}
                                 whileTap={{ scale: 0.97 }}
                                 onClick={handleAddClick}
-                                className="flex shrink-0 items-center gap-2 self-start sm:self-auto rounded-2xl bg-emerald-500 px-5 py-3.5 text-sm font-bold text-black shadow-[0_0_20px_rgba(16,185,129,0.25)] transition hover:bg-emerald-400 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)]"
+                                className="flex shrink-0 items-center gap-2 self-start rounded-2xl bg-emerald-500 px-5 py-3 sm:px-5 sm:py-3.5 text-sm font-bold text-black shadow-[0_0_20px_rgba(16,185,129,0.25)] transition hover:bg-emerald-400 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)]"
                             >
                                 <Plus size={16} />
                                 {user ? "Add Implementation" : "Submit Implementation"}
                             </motion.button>
                         </div>
 
-                        <p className="text-slate-400 text-lg max-w-2xl mt-4">
+                        <p className="text-slate-400 text-base sm:text-lg max-w-2xl mt-4">
                             Explore how the community has brought this idea to life. Browse code repositories,
                             technology stacks, and unique approaches to solving the core challenges.
                         </p>

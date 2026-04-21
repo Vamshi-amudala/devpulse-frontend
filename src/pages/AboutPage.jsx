@@ -100,7 +100,7 @@ const AboutPage = () => {
                 </div>
 
                 <div className="relative max-w-7xl mx-auto">
-                    <div className="grid items-center gap-10 overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.03] p-6 shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl md:grid-cols-2 md:p-10 lg:p-14">
+                    <div className="grid items-center gap-10 overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.03] p-5 sm:p-6 shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl md:grid-cols-2 md:p-10 lg:p-14">
 
                         <motion.div
                             initial={{ opacity: 0, y: 28 }}
@@ -113,7 +113,7 @@ const AboutPage = () => {
                                 Built for developers who love building in public
                             </div>
 
-                            <h1 className="mt-6 max-w-xl text-5xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
+                            <h1 className="mt-6 max-w-xl text-4xl sm:text-5xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
                                 About <span className="text-emerald-400">DevPulse</span>
                             </h1>
 
@@ -161,7 +161,7 @@ const AboutPage = () => {
                             initial={{ opacity: 0, x: 30 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8, delay: 0.1 }}
-                            className="relative"
+                            className="hidden md:block relative"
                         >
                             <div className="absolute -inset-6 rounded-[2.5rem] bg-emerald-400/10 blur-3xl" />
 

@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Lightbulb, Lock, Search, SlidersHorizontal, Plus } from "lucide-react";
+import LoginPromptModal from "../components/modals/LoginPromptModal";
 
 /* ─── helper: decode JWT ─────────────────────────────────────── */
 const getUser = () => {
@@ -223,64 +224,7 @@ const AddIdeaModal = ({ onClose, onCreated }) => {
     );
 };
 
-/* ══════════════════════════════════════════════════════════════
-   LOGIN PROMPT MODAL  (shown when visitor clicks Add Idea)
-══════════════════════════════════════════════════════════════ */
-const LoginPromptModal = ({ onClose, onGoLogin }) => {
-    const overlayRef = useRef(null);
-    const handleBackdrop = (e) => { if (e.target === overlayRef.current) onClose(); };
 
-    return (
-        <AnimatePresence>
-            <motion.div
-                ref={overlayRef}
-                onClick={handleBackdrop}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
-            >
-                <motion.div
-                    initial={{ opacity: 0, y: 20, scale: 0.97 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 12, scale: 0.97 }}
-                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                    className="relative w-full max-w-sm rounded-[2rem] border border-white/10 bg-[#07111f] p-8 text-center shadow-[0_30px_80px_rgba(0,0,0,0.6)]"
-                >
-                    <div className="pointer-events-none absolute -top-14 left-1/2 h-28 w-40 -translate-x-1/2 rounded-full bg-emerald-500/10 blur-3xl" />
-
-                    <span className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-slate-300">
-                        <Lock size={24} />
-                    </span>
-
-                    <h2 className="mb-2 text-xl font-bold text-white">Login Required</h2>
-                    <p className="mb-7 text-sm leading-relaxed text-slate-400">
-                        You need to be signed in to share an idea with the community.
-                    </p>
-
-                    <div className="flex flex-col gap-3">
-                        <button
-                            onClick={onGoLogin}
-                            className="w-full rounded-2xl bg-emerald-500 py-3 text-sm font-bold text-black transition hover:bg-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.25)]"
-                        >
-                            Login to DevPulse
-                        </button>
-                        <button
-                            onClick={onClose}
-                            className="w-full rounded-2xl border border-white/10 py-3 text-sm font-semibold text-slate-300 transition hover:border-white/20 hover:text-white"
-                        >
-                            Maybe later
-                        </button>
-                    </div>
-                </motion.div>
-            </motion.div>
-        </AnimatePresence>
-    );
-};
-
-/* ══════════════════════════════════════════════════════════════
-   MAIN IDEAS PAGE
-══════════════════════════════════════════════════════════════ */
 const Ideas = () => {
     const navigate = useNavigate();
 
@@ -447,19 +391,20 @@ const Ideas = () => {
                 <LoginPromptModal
                     onClose={() => setShowLoginPrompt(false)}
                     onGoLogin={() => navigate("/login")}
+                    message="You need to be signed in to share an idea with the community."
                 />
             )}
 
-            <section className="min-h-screen bg-[#050505] px-6 py-12 pt-28 text-white md:px-12 lg:px-16">
+            <section className="min-h-screen bg-[#050505] px-4 sm:px-6 py-10 sm:py-12 pt-20 sm:pt-28 text-white md:px-12 lg:px-16">
                 <div className="mx-auto max-w-7xl">
 
                     {/* ── page header ─────────────────────────────── */}
-                    <header className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                    <header className="mb-8 sm:mb-10 flex flex-col gap-5 sm:gap-6 sm:flex-row sm:items-end sm:justify-between">
                         <div>
                             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-emerald-400">
                                 Explore Ideas
                             </p>
-                            <h1 className="max-w-2xl text-4xl font-extrabold tracking-tight md:text-5xl">
+                            <h1 className="max-w-2xl text-3xl sm:text-4xl font-extrabold tracking-tight md:text-5xl">
                                 Discover project ideas worth building
                             </h1>
                             <p className="mt-4 max-w-xl text-sm leading-7 text-slate-400 md:text-base">
@@ -473,7 +418,7 @@ const Ideas = () => {
                             whileHover={{ scale: 1.04 }}
                             whileTap={{ scale: 0.97 }}
                             onClick={handleAddClick}
-                            className="flex shrink-0 items-center gap-2 self-start rounded-2xl bg-emerald-500 px-6 py-3.5 text-sm font-bold text-black shadow-[0_0_20px_rgba(16,185,129,0.25)] transition hover:bg-emerald-400 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] md:self-end"
+                            className="flex shrink-0 items-center gap-2 self-start sm:self-auto rounded-2xl bg-emerald-500 px-5 sm:px-6 py-3 sm:py-3.5 text-sm font-bold text-black shadow-[0_0_20px_rgba(16,185,129,0.25)] transition hover:bg-emerald-400 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)]"
                         >
                             <Plus size={16} />
                             {user ? "Add Idea" : "Share an Idea"}
@@ -499,7 +444,7 @@ const Ideas = () => {
                     </div> */}
 
                     {/* ── search + filters ────────────────────────── */}
-                    <div className="mb-10 rounded-[2rem] border border-white/8 bg-white/[0.03] p-4 md:p-6">
+                    <div className="mb-8 sm:mb-10 rounded-[2rem] border border-white/8 bg-white/[0.03] p-3 sm:p-4 md:p-6">
                         {/* filter label row */}
                         <div className="mb-4 flex items-center gap-2">
                             <SlidersHorizontal size={14} className="text-emerald-400" />
@@ -508,7 +453,7 @@ const Ideas = () => {
                             </span>
                         </div>
 
-                        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
                             {/* keyword — bound to searchInput (raw) */}
                             <div className="relative xl:col-span-2">
                                 <Search

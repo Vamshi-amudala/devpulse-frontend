@@ -133,13 +133,13 @@ const AdminDashboard = () => {
             <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-900/10 blur-[150px] rounded-full pointer-events-none" />
             <div className="absolute top-[40%] left-[-20%] w-[60%] h-[40%] bg-indigo-900/10 blur-[150px] rounded-full pointer-events-none" />
 
-            <div className="relative z-10 max-w-[90rem] mx-auto px-6 py-12 lg:px-12">
+            <div className="relative z-10 max-w-[90rem] mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:px-12">
 
                 {/* HEADER */}
                 <motion.div
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 border-b border-white/5 pb-8"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-12 border-b border-white/5 pb-6 sm:pb-8"
                 >
                     <div className="flex items-center gap-5">
                         <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-2xl">
@@ -161,7 +161,7 @@ const AdminDashboard = () => {
                 </motion.div>
 
                 {/* PLATFORM STATS */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-16">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 mb-12 sm:mb-16">
                     {/* Stat Cards */}
                     <StatCard icon={<Users />} label="Total Users" value={platformStats.totalUsers} color="blue" delay={0.1} />
                     <StatCard icon={<Lightbulb />} label="Global Ideas" value={platformStats.totalIdeas} color="emerald" delay={0.15} />

@@ -77,7 +77,7 @@ const Trending = () => {
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/10 via-transparent to-transparent" />
             </div>
 
-            <div className="relative z-10 container mx-auto px-6 pt-32 max-w-5xl">
+            <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-24 sm:pt-32 max-w-5xl">
 
                 {/* ── Header ── */}
                 <motion.div
@@ -94,7 +94,7 @@ const Trending = () => {
                             Leaderboard
                         </p>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-black text-white leading-tight tracking-tight mb-4">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight mb-3 sm:mb-4">
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500">
                             Trending
                         </span>{" "}
@@ -235,9 +235,9 @@ const Trending = () => {
                                             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
                                         )}
 
-                                        <div className="flex items-center gap-5 p-5 md:p-6">
+                                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 sm:p-5 md:p-6">
                                             {/* Rank badge */}
-                                            <div className={`w-14 h-14 shrink-0 rounded-2xl bg-gradient-to-br ${getRankColor(index)} flex items-center justify-center text-lg font-black shadow-lg shadow-black/50 border border-white/10`}>
+                                            <div className={`w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-gradient-to-br ${getRankColor(index)} flex items-center justify-center text-lg font-black shadow-lg shadow-black/50 border border-white/10`}>
                                                 {index < 3 ? (
                                                     <span className="text-2xl drop-shadow-md">{getRankLabel(index)}</span>
                                                 ) : (
@@ -311,8 +311,8 @@ const Trending = () => {
                                                 </div>
                                             )}
 
-                                            {/* Right: votes + actions */}
-                                            <div className="flex flex-col items-end gap-3 shrink-0 ml-4">
+                                            {/* Right: votes + actions — on mobile sits below content */}
+                                            <div className="flex items-center gap-3 sm:flex-col sm:items-end sm:gap-3 shrink-0 sm:ml-4">
                                                 {/* Vote count */}
                                                 <div className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl font-bold text-[15px] border shadow-sm
                                                     ${index === 0

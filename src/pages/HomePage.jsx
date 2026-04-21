@@ -34,19 +34,19 @@ const HomePage = () => {
     <div className="pt-10">
       {/* HERO */}
       <motion.section
-        className="flex min-h-screen items-center justify-between gap-12 pt-30 px-10 md:px-20"
+        className="flex min-h-screen flex-col md:flex-row items-center justify-between gap-8 md:gap-12 pt-24 md:pt-28 px-5 sm:px-10 md:px-20"
         initial="hidden"
         animate="visible"
       >
         <motion.div
           variants={heroAnimation}
-          className="flex-1 max-w-3xl"
+          className="flex-1 max-w-3xl text-center md:text-left"
         >
-          <span className="text-emerald-400 border border-emerald-400/30 px-4 py-2 rounded-full text-sm mb-8 inline-block hover:scale-105 transition-transform duration-300 hover:border-emerald-400">
+          <span className="text-emerald-400 border border-emerald-400/30 px-4 py-2 rounded-full text-xs sm:text-sm mb-6 sm:mb-8 inline-block hover:scale-105 transition-transform duration-300 hover:border-emerald-400">
             Welcome to DevPulse
           </span>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-8">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 sm:mb-8">
             Design{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-600">
               secure systems
@@ -55,13 +55,13 @@ const HomePage = () => {
             with confidence
           </h1>
 
-          <p className="text-slate-300 text-xl mb-10">
+          <p className="text-slate-300 text-base sm:text-lg md:text-xl mb-8 sm:mb-10 max-w-xl mx-auto md:mx-0">
             Explore system design challenges, share ideas,
             and improve backend architecture skills.
           </p>
 
           <button
-            className="bg-emerald-500 hover:bg-emerald-300 text-black font-bold px-10 py-4 rounded-full hover:scale-105 duration-300 transition-transform"
+            className="bg-emerald-500 hover:bg-emerald-300 text-black font-bold px-8 sm:px-10 py-3 sm:py-4 rounded-full hover:scale-105 duration-300 transition-transform text-sm sm:text-base"
             onClick={handleExploreClick}
           >
             Explore Challenges →
@@ -69,7 +69,7 @@ const HomePage = () => {
         </motion.div>
 
         <motion.div
-          className="flex-1 max-w-[500px] opacity-40"
+          className="hidden sm:flex flex-1 max-w-[320px] md:max-w-[500px] opacity-40"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 3 }}

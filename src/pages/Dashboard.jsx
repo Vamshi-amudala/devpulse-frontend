@@ -106,14 +106,14 @@ const Dashboard = () => {
             <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-900/20 blur-[150px] rounded-full pointer-events-none" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-900/10 blur-[130px] rounded-full pointer-events-none" />
 
-            <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 lg:px-12">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-24 lg:px-12">
                 
                 {/* HEADER / PROFILE OVERVIEW */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16"
+                    className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12 sm:mb-16"
                 >
                     <div className="flex items-center gap-6">
                         {/* Avatar Block */}
@@ -127,12 +127,12 @@ const Dashboard = () => {
                             <span className="inline-flex items-center px-3 py-1 mb-3 text-[10px] font-bold tracking-widest uppercase border rounded-full bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
                                 Engineer Dashboard
                             </span>
-                            <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-2">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight mb-2">
                                 Welcome, <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">{userInfo.name}</span>
                             </h1>
-                            <div className="flex items-center gap-4 text-sm text-slate-400 font-mono">
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-slate-400 font-mono">
                                 <span className="flex items-center gap-1.5"><User className="w-4 h-4" /> {userInfo.email}</span>
-                                <span className="opacity-40">•</span>
+                                <span className="opacity-40 hidden sm:inline">•</span>
                                 <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> Joined {formatDate(userInfo.joinedAt)}</span>
                             </div>
                         </div>
@@ -140,7 +140,7 @@ const Dashboard = () => {
 
                     <button 
                         onClick={handleLogout}
-                        className="flex items-center gap-2 px-6 py-3 text-sm font-bold transition-all border rounded-xl text-slate-300 border-white/10 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30 active:scale-95 group"
+                        className="flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3 text-sm font-bold transition-all border rounded-xl text-slate-300 border-white/10 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30 active:scale-95 group"
                     >
                         <LogOut className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
                         Sign Out
@@ -148,7 +148,7 @@ const Dashboard = () => {
                 </motion.div>
 
                 {/* KPI METRICS ROW */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6 mb-12 sm:mb-16">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}

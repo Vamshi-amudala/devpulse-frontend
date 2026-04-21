@@ -30,7 +30,7 @@ const ContactPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white pt-28 overflow-x-hidden">
+        <div className="min-h-screen bg-black text-white pt-20 sm:pt-28 overflow-x-hidden">
 
             {/* BACKGROUND GLOW */}
             <div className="fixed inset-0 -z-10 pointer-events-none">
@@ -40,7 +40,7 @@ const ContactPage = () => {
             </div>
 
             {/* HERO */}
-            <section className="px-6 md:px-12 lg:px-20 pb-16">
+            <section className="px-4 sm:px-6 md:px-12 lg:px-20 pb-12 sm:pb-16">
                 <div className="max-w-5xl mx-auto text-center">
                     <div className="inline-flex items-center gap-2 border border-emerald-400/20 bg-emerald-400/10 text-emerald-300 px-4 py-2 rounded-full text-sm mb-6">
                         <MessageSquare size={16} />
@@ -59,7 +59,7 @@ const ContactPage = () => {
             </section>
 
             {/* MAIN */}
-            <section className="px-6 md:px-12 lg:px-20 pb-24">
+            <section className="px-4 sm:px-6 md:px-12 lg:px-20 pb-16 sm:pb-24">
                 <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-start">
 
                     {/* LEFT - FORM */}
@@ -134,7 +134,7 @@ const ContactPage = () => {
                     {/* RIGHT - IMAGE CARD */}
                     <div className="space-y-6">
 
-                        <div className="relative rounded-[2rem] overflow-hidden border border-emerald-400/20 shadow-[0_0_40px_rgba(16,185,129,0.08)] h-[420px] group">
+                        <div className="relative rounded-[2rem] overflow-hidden border border-emerald-400/20 shadow-[0_0_40px_rgba(16,185,129,0.08)] h-[280px] sm:h-[420px] group">
 
                             {/* IMAGE */}
                             <img

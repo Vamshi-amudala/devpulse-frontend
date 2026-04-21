@@ -43,22 +43,22 @@ const IdeasStream = ({ title = "Ideas Stream" }) => {
     return (
         <section className="relative z-10 py-20">
 
-            <div className="px-10 mb-12 md:px-20">
-                <h2 className="text-4xl italic font-bold tracking-tighter uppercase">
+            <div className="px-5 sm:px-10 mb-8 sm:mb-12 md:px-20">
+                <h2 className="text-3xl sm:text-4xl italic font-bold tracking-tighter uppercase">
                     Live <span className="text-emerald-500">{title}</span>
                 </h2>
             </div>
 
             <div className="relative flex overflow-hidden group">
 
-                <div className="flex w-max gap-8 pr-8 py-10 animate-marquee whitespace-nowrap group-hover:[animation-play-state:paused]">
+                <div className="flex w-max gap-5 sm:gap-8 pr-8 py-8 sm:py-10 animate-marquee whitespace-nowrap group-hover:[animation-play-state:paused]">
 
                     {ideaList.map((idea, index) => (
                         <motion.div
                             key={`${idea.id}-${index}`}
                             whileHover={{ scale: 1.02, borderColor: "rgba(52,211,153,0.5)" }}
                             onClick={() => setSelectedIdea(idea)}
-                            className="min-w-[400px] flex flex-col bg-slate-900/40 border border-emerald-500/10 p-8 rounded-[2.5rem] cursor-pointer transition-all shadow-2xl whitespace-normal"
+                            className="min-w-[280px] sm:min-w-[360px] md:min-w-[400px] flex flex-col bg-slate-900/40 border border-emerald-500/10 p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] cursor-pointer transition-all shadow-2xl whitespace-normal"
                         >
 
                             <div className="flex items-start justify-between mb-6">
