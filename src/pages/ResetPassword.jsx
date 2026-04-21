@@ -127,9 +127,7 @@ const ResetPassword = () => {
 
                 <div className="bg-black/85 backdrop-blur-xl p-8 sm:p-10 rounded-[2rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
                     <div className="mb-8 text-center">
-                        {/* <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(16,185,129,0.15)]">
-                            <Lock className="text-emerald-400" size={32} />
-                        </div> */}
+
                         <h2 className="text-3xl font-extrabold text-white mb-2 tracking-tight">
                             {step === 1 ? "Forgot Password?" : "Set New Password"}
                         </h2>

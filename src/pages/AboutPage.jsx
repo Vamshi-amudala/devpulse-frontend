@@ -16,13 +16,11 @@ import {
     GitBranch,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-// Assuming the image is in your public/images folder
-const illustrationImage = '/images/some_ideas_come_at_night.png';
 
 const AboutPage = () => {
     const navigate = useNavigate();
 
-    // Fixed: pass animation values directly instead of using variant name strings
+
     const fadeUp = {
         initial: { opacity: 0, y: 30 },
         whileInView: { opacity: 1, y: 0 },
@@ -83,7 +81,7 @@ const AboutPage = () => {
     ];
 
     return (
-        // Fixed: added `relative` so the absolute glow divs are scoped correctly
+
         <div className="relative min-h-screen bg-black text-white overflow-hidden">
             {/* Background glow */}
             <div className="absolute inset-0 -z-10 pointer-events-none">
@@ -161,7 +159,7 @@ const AboutPage = () => {
                             initial={{ opacity: 0, x: 30 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8, delay: 0.1 }}
-                            className="hidden md:block relative"
+                            className="relative"
                         >
                             <div className="absolute -inset-6 rounded-[2.5rem] bg-emerald-400/10 blur-3xl" />
 
@@ -171,14 +169,14 @@ const AboutPage = () => {
                                 <img
                                     src="/images/idea.png"
                                     alt="Developer illustration"
-                                    className="relative z-10 w-full rounded-[1.5rem] object-cover"
+                                    className="relative z-10 w-full rounded-[1.5rem] object-cover max-h-[260px] sm:max-h-none"
                                 />
                             </div>
                         </motion.div>
                     </div>
                 </div>
             </section>
-            {/* Why DevPulse */}
+
             {/* Why DevPulse */}
             <section className="px-6 md:px-12 lg:px-20 py-16">
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">

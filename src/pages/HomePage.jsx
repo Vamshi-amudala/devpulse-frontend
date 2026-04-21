@@ -34,7 +34,7 @@ const HomePage = () => {
     <div className="pt-10">
       {/* HERO */}
       <motion.section
-        className="flex min-h-screen flex-col md:flex-row items-center justify-between gap-8 md:gap-12 pt-24 md:pt-28 px-5 sm:px-10 md:px-20"
+        className="flex min-h-screen flex-col md:flex-row items-center justify-between gap-8 md:gap-12 pt-8 md:pt-8 px-5 sm:px-10 md:px-20"
         initial="hidden"
         animate="visible"
       >
@@ -69,7 +69,7 @@ const HomePage = () => {
         </motion.div>
 
         <motion.div
-          className="hidden sm:flex flex-1 max-w-[320px] md:max-w-[500px] opacity-40"
+          className="flex flex-1 justify-center items-center max-w-[220px] sm:max-w-[320px] md:max-w-[500px] mx-auto md:mx-0 opacity-40"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 3 }}

@@ -12,6 +12,8 @@ import ImplementationDetail from "./pages/ImplementationDetail";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import Trending from "./pages/Trending";
+import MyIdeas from "./pages/MyIdeas";
+
 function App() {
   return (
     <Router>
@@ -31,6 +33,8 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/ideas/:ideaId/implementations" element={<Implementation />} />
         <Route path="/ideas/:ideaId/implementations/:implId" element={<ImplementationDetail />} />
+        <Route path="/my-ideas" element={<MyIdeas />} />
+
       </Routes>
     </Router>
   );

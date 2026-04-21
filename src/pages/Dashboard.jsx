@@ -107,7 +107,7 @@ const Dashboard = () => {
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-900/10 blur-[130px] rounded-full pointer-events-none" />
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-24 lg:px-12">
-                
+
                 {/* HEADER / PROFILE OVERVIEW */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -122,7 +122,7 @@ const Dashboard = () => {
                                 {userInfo.name ? userInfo.name.substring(0, 2) : "US"}
                             </span>
                         </div>
-                        
+
                         <div>
                             <span className="inline-flex items-center px-3 py-1 mb-3 text-[10px] font-bold tracking-widest uppercase border rounded-full bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
                                 Engineer Dashboard
@@ -138,7 +138,7 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    <button 
+                    <button
                         onClick={handleLogout}
                         className="flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3 text-sm font-bold transition-all border rounded-xl text-slate-300 border-white/10 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30 active:scale-95 group"
                     >
@@ -197,7 +197,7 @@ const Dashboard = () => {
 
                 {/* MAIN CONTENT SPLIT */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                    
+
                     {/* IDEAS COLUMN */}
                     <div className="space-y-6">
                         <div className="flex items-center justify-between mb-8">
@@ -205,12 +205,15 @@ const Dashboard = () => {
                                 <Sparkles className="w-5 h-5 text-emerald-400" />
                                 My Blueprints
                             </h3>
-                            <button className="text-sm font-bold text-slate-400 hover:text-emerald-400 transition-colors uppercase tracking-widest flex items-center gap-1 group">
-                                View All 
+                            <button className="text-sm font-bold text-slate-400 hover:text-emerald-400 transition-colors uppercase tracking-widest flex items-center gap-1 group"
+                                onClick={() => navigate("/my-ideas")}
+
+                            >
+                                View All
                                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                             </button>
                         </div>
-                        
+
                         {myIdeas.length === 0 ? (
                             <div className="p-12 border border-dashed rounded-[2rem] border-white/10 flex flex-col items-center justify-center text-center bg-slate-900/20">
                                 <Lightbulb className="w-12 h-12 text-slate-600 mb-4" />
@@ -222,18 +225,17 @@ const Dashboard = () => {
                         ) : (
                             <div className="space-y-4">
                                 {myIdeas.map((idea) => (
-                                    <motion.div 
+                                    <motion.div
                                         key={idea.id}
                                         whileHover={{ scale: 1.01 }}
                                         className="p-6 border bg-slate-900/60 backdrop-blur-md rounded-3xl border-white/5 hover:border-emerald-500/20 transition-all group flex flex-col cursor-pointer shadow-lg"
                                     >
                                         <div className="flex items-start justify-between mb-3">
                                             <h4 className="text-xl font-bold text-white group-hover:text-emerald-300 transition-colors">{idea.title}</h4>
-                                            <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider ${
-                                                idea.difficulty === 'EASY' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 
-                                                idea.difficulty === 'MEDIUM' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 
-                                                'bg-red-500/10 text-red-400 border border-red-500/20'
-                                            }`}>
+                                            <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider ${idea.difficulty === 'EASY' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                                                idea.difficulty === 'MEDIUM' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
+                                                    'bg-red-500/10 text-red-400 border border-red-500/20'
+                                                }`}>
                                                 {idea.difficulty}
                                             </span>
                                         </div>

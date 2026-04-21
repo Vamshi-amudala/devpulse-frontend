@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Lightbulb, Lock, Search, SlidersHorizontal, Plus } from "lucide-react";
 import LoginPromptModal from "../components/modals/LoginPromptModal";
 
-/* ─── helper: decode JWT ─────────────────────────────────────── */
+/* helper: decode JWT  */
 const getUser = () => {
     const token = localStorage.getItem("token");
     if (!token) return null;
@@ -24,16 +24,16 @@ const getUser = () => {
     }
 };
 
-/* ─── difficulty badge colours ────────────────────────────────── */
+/*  difficulty badge colours  */
 const difficultyStyle = {
     easy: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
     medium: "border-amber-500/30 bg-amber-500/10 text-amber-400",
     hard: "border-rose-500/30 bg-rose-500/10 text-rose-400",
 };
 
-/* ══════════════════════════════════════════════════════════════
+/* 
    ADD IDEA MODAL
-══════════════════════════════════════════════════════════════ */
+ */
 const AddIdeaModal = ({ onClose, onCreated }) => {
     const overlayRef = useRef(null);
     const [form, setForm] = useState({
@@ -80,7 +80,6 @@ const AddIdeaModal = ({ onClose, onCreated }) => {
         }
     };
 
-    /* close on backdrop click */
     const handleBackdrop = (e) => {
         if (e.target === overlayRef.current) onClose();
     };
@@ -233,11 +232,11 @@ const Ideas = () => {
     const [error, setError] = useState(null);
     const [featuredId, setFeaturedId] = useState(null);
 
-    /* ── raw input states (instant, bound to inputs) ─────────── */
+    /* raw input states (instant, bound to inputs) */
     const [searchInput, setSearchInput] = useState("");
     const [techInput, setTechInput] = useState("");
 
-    /* ── debounced filter states (trigger API fetch) ──────────── */
+    /* debounced filter states (trigger API fetch) */
     const [searchTerm, setSearchTerm] = useState("");
     const [techStack, setTechStack] = useState("");
 
@@ -258,7 +257,7 @@ const Ideas = () => {
 
     const user = getUser();
 
-    /* ── debounce: sync raw inputs → filter states after 500ms ── */
+    /*  debounce: sync raw inputs → filter states after 500ms ── */
     useEffect(() => {
         const timer = setTimeout(() => {
             setSearchTerm(searchInput);
@@ -269,7 +268,7 @@ const Ideas = () => {
         return () => clearTimeout(timer);
     }, [searchInput, techInput]);
 
-    /* ── fetch ─────────────────────────────────────────────────── */
+    /*  fetch  */
     const loadIdeas = async () => {
         try {
             setLoading(true);
@@ -306,12 +305,12 @@ const Ideas = () => {
         }
     };
 
-    /* ── only re-fetch when debounced values change ────────────── */
+    /* only re-fetch when debounced values change */
     useEffect(() => {
         loadIdeas();
     }, [searchTerm, techStack, difficulty, sortBy, direction, page]);
 
-    /* ── sorted display list ───────────────────────────────────── */
+    /* sorted display list */
     const displayedIdeas = useMemo(() => {
         if (!featuredId) return ideas;
         return [...ideas].sort((a, b) => {
@@ -321,7 +320,7 @@ const Ideas = () => {
         });
     }, [ideas, featuredId]);
 
-    /* ── helpers ───────────────────────────────────────────────── */
+    /*  helpers */
     const getVisibleTags = (stack) => {
         if (!stack) return [];
         return stack.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 4);
@@ -350,13 +349,13 @@ const Ideas = () => {
         }
     };
 
-    /* ── animations ────────────────────────────────────────────── */
+    /*  animations */
     const cardVariants = {
         hidden: { opacity: 0, y: 18 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
     };
 
-    /* ── loading ───────────────────────────────────────────────── */
+    /*  loading */
     if (loading) {
         return (
             <div className="flex min-h-[80vh] items-center justify-center bg-[#050505]">
@@ -380,7 +379,7 @@ const Ideas = () => {
 
     return (
         <>
-            {/* ── modals ──────────────────────────────────────────── */}
+            {/*  modals  */}
             {showAddModal && (
                 <AddIdeaModal
                     onClose={() => setShowAddModal(false)}
@@ -398,7 +397,7 @@ const Ideas = () => {
             <section className="min-h-screen bg-[#050505] px-4 sm:px-6 py-10 sm:py-12 pt-20 sm:pt-28 text-white md:px-12 lg:px-16">
                 <div className="mx-auto max-w-7xl">
 
-                    {/* ── page header ─────────────────────────────── */}
+                    {/* ── page header  */}
                     <header className="mb-8 sm:mb-10 flex flex-col gap-5 sm:gap-6 sm:flex-row sm:items-end sm:justify-between">
                         <div>
                             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-emerald-400">
@@ -426,24 +425,7 @@ const Ideas = () => {
                     </header>
 
 
-                    {/* ── stats bar ─────────────────────────────────
-                    <div className="mb-8 grid gap-4 md:grid-cols-3">
-                        {[
-                            { label: "Total Ideas", value: totalIdeas },
-                            { label: "Current Page", value: page + 1 },
-                            { label: "Total Pages", value: totalPages },
-                        ].map(({ label, value }) => (
-                            <div
-                                key={label}
-                                className="rounded-[1.75rem] border border-white/8 bg-white/[0.03] p-5"
-                            >
-                                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{label}</p>
-                                <p className="mt-3 text-3xl font-bold text-white">{value}</p>
-                            </div>
-                        ))}
-                    </div> */}
-
-                    {/* ── search + filters ────────────────────────── */}
+                    {/* search + filters  */}
                     <div className="mb-8 sm:mb-10 rounded-[2rem] border border-white/8 bg-white/[0.03] p-3 sm:p-4 md:p-6">
                         {/* filter label row */}
                         <div className="mb-4 flex items-center gap-2">
@@ -538,7 +520,7 @@ const Ideas = () => {
                         </div>
                     </div>
 
-                    {/* ── ideas grid ──────────────────────────────── */}
+                    {/*  ideas grid  */}
                     {displayedIdeas.length === 0 ? (
                         <div className="rounded-[2rem] border border-white/8 bg-white/[0.03] px-6 py-20 text-center">
                             <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-slate-400">
@@ -696,7 +678,7 @@ const Ideas = () => {
                         </div>
                     )}
 
-                    {/* ── pagination ──────────────────────────────── */}
+                    {/*  pagination  */}
                     {totalPages > 1 && (
                         <div className="mt-12 flex items-center justify-center gap-3">
                             <button

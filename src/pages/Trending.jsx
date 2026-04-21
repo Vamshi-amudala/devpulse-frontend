@@ -4,18 +4,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import {
     TrendingUp, Github, Star, ThumbsUp, ExternalLink,
-    AlertCircle, Loader2, User, Flame, ArrowRight, Lightbulb, Code
+    AlertCircle, Loader2, User, ArrowRight, Lightbulb, Code
 } from "lucide-react";
 
 const Trending = () => {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState("ideas"); // "ideas" or "implementations"
+    const [activeTab, setActiveTab] = useState("ideas");
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    // Remove pagination since backend doesn't support it
-    // const [page, setPage] = useState(1);
-    // const [hasMore, setHasMore] = useState(true);
+
 
     useEffect(() => {
         // Remove page reset logic
@@ -29,14 +27,14 @@ const Trending = () => {
             setError("");
             try {
                 const API = import.meta.env.VITE_API_URL;
-                // Remove page parameter since backend doesn't support pagination
+
                 const endpoint = activeTab === "ideas"
-                    ? `${API}/api/trending/ideas?limit=20`  // Increased limit for more items
+                    ? `${API}/api/trending/ideas?limit=20`
                     : `${API}/api/trending?limit=20`;
 
                 const res = await axios.get(endpoint);
                 const data = res.data || [];
-                // Remove pagination logic
+
                 const actualData = Array.isArray(data) ? data : data.content || [];
                 setItems(actualData);
             } catch (err) {
@@ -47,21 +45,11 @@ const Trending = () => {
             }
         };
         fetchTrending();
-    }, [activeTab]);  // Remove page dependency
+    }, [activeTab]);
 
-    const getRankColor = (index) => {
-        // Since no pagination, use simple index
-        if (index === 0) return "from-amber-400 to-yellow-500";
-        if (index === 1) return "from-slate-300 to-slate-400";
-        if (index === 2) return "from-amber-600 to-orange-700";
-        return activeTab === "ideas" ? "from-blue-500 to-blue-700" : "from-emerald-500 to-emerald-700";
-    };
-
-    const getRankLabel = (index) => {
-        if (index === 0) return "🥇";
-        if (index === 1) return "🥈";
-        if (index === 2) return "🥉";
-        return `#${index + 1}`;
+    const getAccentColor = (index) => {
+        if (index === 0) return "bg-amber-400";
+        return activeTab === "ideas" ? "bg-blue-500/50" : "bg-emerald-500/50";
     };
 
     return (
@@ -86,14 +74,6 @@ const Trending = () => {
                     transition={{ duration: 0.6 }}
                     className="mb-10 text-center md:text-left"
                 >
-                    <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
-                        <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/20 flex items-center justify-center">
-                            <Flame size={20} className="text-amber-400" />
-                        </div>
-                        <p className="text-sm font-bold uppercase tracking-widest text-amber-400">
-                            Leaderboard
-                        </p>
-                    </div>
                     <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight mb-3 sm:mb-4">
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500">
                             Trending
@@ -204,18 +184,14 @@ const Trending = () => {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.4, delay: index * 0.05 }}
-                                        className={`group relative rounded-[1.75rem] border backdrop-blur-xl overflow-hidden transition-all duration-300 cursor-pointer
+                                        className={`group relative rounded-[1.75rem] border backdrop-blur-xl overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:scale-[1.01]
                                             ${index === 0
-                                                ? "border-amber-500/30 bg-amber-500/5 hover:border-amber-400/50 hover:shadow-[0_0_40px_rgba(245,158,11,0.12)]"
-                                                : index === 1
-                                                    ? "border-slate-400/20 bg-white/[0.03] hover:border-slate-300/30"
-                                                    : index === 2
-                                                        ? "border-orange-700/20 bg-orange-500/[0.03] hover:border-orange-600/30"
-                                                        : `border-white/8 bg-white/[0.02] ${activeTab === 'ideas' ? 'hover:border-blue-500/20 hover:shadow-[0_0_30px_rgba(59,130,246,0.07)]' : 'hover:border-emerald-500/20 hover:shadow-[0_0_30px_rgba(16,185,129,0.07)]'}`
+                                                ? "border-amber-500/30 bg-amber-500/5 hover:border-amber-400/50 shadow-[0_0_40px_rgba(245,158,11,0.08)] hover:shadow-[0_0_40px_rgba(245,158,11,0.18)]"
+                                                : `border-white/8 bg-white/[0.02] ${activeTab === 'ideas' ? 'hover:border-blue-500/20 hover:shadow-[0_0_30px_rgba(59,130,246,0.07)]' : 'hover:border-emerald-500/20 hover:shadow-[0_0_30px_rgba(16,185,129,0.07)]'}`
                                             }
                                         `}
 
-                                                        onClick={() => {
+                                        onClick={() => {
                                             if (activeTab === "ideas") {
                                                 const ideaId = item.ideaId || item.id;
                                                 navigate(`/ideas/${ideaId}/implementations`);
@@ -236,14 +212,8 @@ const Trending = () => {
                                         )}
 
                                         <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 sm:p-5 md:p-6">
-                                            {/* Rank badge */}
-                                            <div className={`w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-gradient-to-br ${getRankColor(index)} flex items-center justify-center text-lg font-black shadow-lg shadow-black/50 border border-white/10`}>
-                                                {index < 3 ? (
-                                                    <span className="text-2xl drop-shadow-md">{getRankLabel(index)}</span>
-                                                ) : (
-                                                    <span className="text-white text-base font-black">#{index + 1}</span>
-                                                )}
-                                            </div>
+                                            {/* Left accent indicator */}
+                                            <div className={`hidden sm:block w-[3px] self-stretch rounded-full shrink-0 ${getAccentColor(index)}`} />
 
                                             {/* Main content - Dynamic based on tab */}
                                             {activeTab === "ideas" ? (
@@ -252,6 +222,11 @@ const Trending = () => {
                                                         <h2 className="text-lg md:text-xl font-bold text-white group-hover:text-blue-400 transition-colors truncate">
                                                             {item.ideaTitle}
                                                         </h2>
+                                                        {index === 0 && (
+                                                            <span className="self-start sm:self-auto shrink-0 text-[11px] font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">
+                                                                Top
+                                                            </span>
+                                                        )}
                                                         {item.difficulty && (
                                                             <span className={`self-start sm:self-auto shrink-0 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${item.difficulty?.toLowerCase() === 'easy' ? 'text-green-400 bg-green-500/10 border-green-500/20' :
                                                                 item.difficulty?.toLowerCase() === 'medium' ? 'text-blue-400 bg-blue-500/10 border-blue-500/20' :
@@ -286,6 +261,11 @@ const Trending = () => {
                                                         <h2 className="text-base md:text-lg font-bold text-white group-hover:text-emerald-400 transition-colors truncate">
                                                             {item.repoName || item.githubUrl}
                                                         </h2>
+                                                        {index === 0 && (
+                                                            <span className="self-start sm:self-auto shrink-0 text-[11px] font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">
+                                                                Top
+                                                            </span>
+                                                        )}
                                                         {item.primaryLanguage && (
                                                             <span className="self-start sm:self-auto shrink-0 text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
                                                                 {item.primaryLanguage}
@@ -311,7 +291,7 @@ const Trending = () => {
                                                 </div>
                                             )}
 
-                                            {/* Right: votes + actions — on mobile sits below content */}
+
                                             <div className="flex items-center gap-3 sm:flex-col sm:items-end sm:gap-3 shrink-0 sm:ml-4">
                                                 {/* Vote count */}
                                                 <div className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl font-bold text-[15px] border shadow-sm
@@ -363,7 +343,7 @@ const Trending = () => {
                         transition={{ delay: 0.8 }}
                         className="text-center text-xs font-semibold uppercase tracking-wider text-slate-600 mt-14"
                     >
-                        Rankings are based on community upvotes · Updated in real time
+                        Curated by community upvotes · Updated in real time
                     </motion.p>
                 )}
             </div>

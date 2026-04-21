@@ -51,7 +51,7 @@ const Login = () => {
         /* ── Full-screen root ── */
         <div className="relative min-h-screen bg-slate-950 text-white overflow-hidden">
 
-            {/* ── Background image — always covers entire screen ── */}
+
             <div className="absolute inset-0 pointer-events-none z-0">
                 <img
                     src="/images/bg-view.png"
@@ -62,11 +62,8 @@ const Login = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
             </div>
 
-            {/* ── Two-panel layout — stacks on mobile, side-by-side on md+ ── */}
             <div className="relative z-10 flex flex-col md:flex-row min-h-screen">
 
-                {/* ── LEFT panel — marketing copy ── */}
-                {/* Hidden on mobile, shown from md breakpoint */}
                 <div className="hidden md:flex flex-col justify-center flex-1 px-10 lg:px-16 xl:px-24 pt-24 pb-12">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -101,11 +98,6 @@ const Login = () => {
                     </motion.div>
                 </div>
 
-                {/* ── RIGHT panel — form ── */}
-                {/*
-                    Mobile  : full width, no left border, scrollable with top padding for navbar
-                    md+     : fixed width right column with left border separator
-                */}
                 <div className="
                     flex flex-col justify-center
                     w-full md:w-[420px] lg:w-[480px] xl:w-[520px] shrink-0

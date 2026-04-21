@@ -37,18 +37,18 @@ const CTA = () => {
                     </button>
                 </motion.div>
 
-                {/* IMAGE — hidden on mobile */}
+                {/* IMAGE — now visible on all devices */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
-                    className="hidden md:flex relative justify-center"
+                    className="flex relative justify-center"
                 >
                     <img
                         src="/images/home.png"
                         alt="developer"
-                        className="max-h-[340px] object-contain opacity-95 mix-blend-lighten"
+                        className="max-h-[220px] sm:max-h-[280px] md:max-h-[340px] object-contain opacity-95 mix-blend-lighten"
                     />
                 </motion.div>
             </div>

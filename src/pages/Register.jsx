@@ -52,22 +52,20 @@ const Register = () => {
         /* ── Full-screen root ── */
         <div className="relative min-h-screen bg-slate-950 text-white overflow-hidden">
 
-            {/* ── Background image — always covers entire screen ── */}
+
             <div className="absolute inset-0 pointer-events-none z-0">
                 <img
                     src="/images/bg-view.png"
                     alt="DevPulse Background"
                     className="w-full h-full object-cover mix-blend-screen opacity-40"
                 />
-                {/* gradient vignette */}
+
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
             </div>
 
-            {/* ── Two-panel layout — stacks on mobile, side-by-side on md+ ── */}
+
             <div className="relative z-10 flex flex-col md:flex-row min-h-screen">
 
-                {/* ── LEFT panel — marketing copy ── */}
-                {/* Hidden on mobile, shown from md breakpoint */}
                 <div className="hidden md:flex flex-col justify-center flex-1 px-10 lg:px-16 xl:px-24 pt-24 pb-12">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -102,11 +100,6 @@ const Register = () => {
                     </motion.div>
                 </div>
 
-                {/* ── RIGHT panel — form ── */}
-                {/*
-                    Mobile  : full width, scrollable with top padding for navbar
-                    md+     : fixed-width right column with left border separator
-                */}
                 <div className="
                     flex flex-col justify-center
                     w-full md:w-[420px] lg:w-[480px] xl:w-[520px] shrink-0
@@ -124,7 +117,7 @@ const Register = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7 }}
                         >
-                            {/* Mobile-only branding */}
+
                             <div className="md:hidden text-center mb-8">
                                 <span className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-emerald-400 border border-emerald-400/30 bg-emerald-950/50 px-3 py-1.5 rounded-full mb-4">
                                     Join the Community
@@ -137,7 +130,7 @@ const Register = () => {
                                 </h2>
                             </div>
 
-                            {/* Form heading */}
+
                             <div className="mb-7 text-center md:text-left">
                                 <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 tracking-tight">
                                     Create an account
@@ -147,7 +140,7 @@ const Register = () => {
                                 </p>
                             </div>
 
-                            {/* Alerts */}
+
                             {error && (
                                 <div className="mb-4 p-3 bg-red-500/10 border border-red-500/50 text-red-500 rounded-xl text-sm font-semibold">
                                     {error}
@@ -227,11 +220,10 @@ const Register = () => {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className={`w-full py-3.5 font-extrabold text-black rounded-2xl transition-all text-sm shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] ${
-                                            loading
+                                        className={`w-full py-3.5 font-extrabold text-black rounded-2xl transition-all text-sm shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] ${loading
                                                 ? "bg-emerald-700 cursor-not-allowed opacity-70"
                                                 : "bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98]"
-                                        }`}
+                                            }`}
                                     >
                                         {loading ? "Registering..." : "Complete Registration"}
                                     </button>

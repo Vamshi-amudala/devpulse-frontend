@@ -136,7 +136,7 @@ const NavBar = ({ animationDelay = 0.3 }) => {
               </Link>
             </div>
           ) : (
-            <div className="relative flex items-center bg-transparent rounded-full p-1 gap-1">
+            <div className="relative flex items-center bg-transparent rounded-full p-2 gap-1">
               {(isLoginActive || isRegisterActive) && (
                 <motion.div
                   layoutId="auth-pill"

@@ -9,7 +9,7 @@ import {
 import AddImplModal from "../components/modals/AddImplModal";
 import LoginPromptModal from "../components/modals/LoginPromptModal";
 
-/* ── decode JWT ─────────────────────────────────────────────── */
+/*  decode JWT  */
 const getUser = () => {
     const token = localStorage.getItem("token");
     if (!token) return null;
