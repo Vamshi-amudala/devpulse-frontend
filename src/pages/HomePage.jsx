@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import homePageVideo from "../assets/home-page.mp4";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -15,8 +16,8 @@ const HomePage = () => {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 1 }
-    }
+      transition: { duration: 1 },
+    },
   };
 
   const handleExploreClick = () => {
@@ -34,19 +35,24 @@ const HomePage = () => {
     <div className="pt-10">
       {/* HERO */}
       <motion.section
-        className="flex min-h-screen flex-col md:flex-row items-center justify-between gap-8 md:gap-12 pt-8 md:pt-8 px-5 sm:px-10 md:px-20"
+        className="relative flex min-h-screen flex-col md:flex-row items-center justify-between gap-8 md:gap-12 pt-8 md:pt-8 px-5 sm:px-10 md:px-20 overflow-hidden"
         initial="hidden"
         animate="visible"
       >
+        {/* Left-side dark gradient to protect text clarity */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute left-0 top-0 h-full w-full md:w-[60%] bg-gradient-to-b md:bg-gradient-to-r from-black via-black/80 md:via-black/95 to-transparent z-0" />
+        </div>
+
         <motion.div
           variants={heroAnimation}
-          className="flex-1 max-w-3xl text-center md:text-left"
+          className="flex-1 max-w-3xl text-center md:text-left relative z-10"
         >
           <span className="text-emerald-400 border border-emerald-400/30 px-4 py-2 rounded-full text-xs sm:text-sm mb-6 sm:mb-8 inline-block hover:scale-105 transition-transform duration-300 hover:border-emerald-400">
             Welcome to DevPulse
           </span>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 sm:mb-8">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 sm:mb-8 text-white">
             Design{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-600">
               secure systems
@@ -55,7 +61,7 @@ const HomePage = () => {
             with confidence
           </h1>
 
-          <p className="text-slate-300 text-base sm:text-lg md:text-xl mb-8 sm:mb-10 max-w-xl mx-auto md:mx-0">
+          <p className="text-slate-300 text-base sm:text-lg md:text-xl mb-8 sm:mb-10 max-w-xl mx-auto md:mx-0 relative z-10">
             Explore system design challenges, share ideas,
             and improve backend architecture skills.
           </p>
@@ -69,15 +75,30 @@ const HomePage = () => {
         </motion.div>
 
         <motion.div
-          className="flex flex-1 justify-center items-center max-w-[220px] sm:max-w-[320px] md:max-w-[500px] mx-auto md:mx-0 opacity-40"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 3 }}
+          className="relative flex flex-[1.8] justify-center md:justify-end items-center w-full mx-auto md:mx-0 md:-mr-20 z-[1] mt-12 md:mt-0"
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 0.8, scale: 1 }}
+          transition={{ duration: 4, ease: "easeOut" }}
         >
-          <img
-            src="/images/home-boy.png"
-            alt="developer"
-            className="w-full drop-shadow-[0_0_55px_rgba(34,197,94,0.4)]"
+          {/* Ambient glow behind video */}
+          <div className="absolute inset-0 bg-emerald-500/10 blur-[100px] rounded-full scale-90 pointer-events-none" />
+
+          <video
+            src={homePageVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full md:w-[115%] relative z-10 translate-x-0 md:translate-x-24"
+            style={{
+              maskImage:
+                "linear-gradient(to right, transparent 0%, black 18%, black 88%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 88%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent 0%, black 18%, black 88%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 88%, transparent 100%)",
+              maskComposite: "intersect",
+              WebkitMaskComposite: "source-in",
+              filter: "drop-shadow(0 0 40px rgba(16, 185, 129, 0.3))",
+            }}
           />
         </motion.div>
       </motion.section>
@@ -97,7 +118,6 @@ const HomePage = () => {
       <AnimatePresence>
         {showExploreModal && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center px-4 overflow-hidden">
-            {/* Animated Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -107,7 +127,6 @@ const HomePage = () => {
               className="absolute inset-0 bg-black/60 backdrop-blur-xl"
             />
 
-            {/* Modal Container */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -115,21 +134,26 @@ const HomePage = () => {
               transition={{ type: "spring", duration: 0.6, bounce: 0.3 }}
               className="relative w-full max-w-md rounded-[2.5rem] bg-slate-950/80 border border-white/10 shadow-[0_0_80px_rgba(16,185,129,0.15)] overflow-hidden backdrop-blur-3xl z-10 p-1.5"
             >
-              {/* Dynamic Glow Backgrounds */}
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-emerald-500/10 via-transparent to-blue-500/10 opacity-60 pointer-events-none" />
               <div className="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/20 blur-[60px] pointer-events-none" />
-
-              {/* Top Highlight Line */}
               <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent" />
 
               <div className="relative bg-[#0a0f16]/90 rounded-[2.1rem] p-8 md:p-10 backdrop-blur-xl border border-white/5 h-full">
-                {/* Close Button */}
                 <button
                   onClick={() => setShowExploreModal(false)}
                   className="absolute top-5 right-5 text-slate-500 hover:text-white transition-colors bg-white/5 hover:bg-white/10 rounded-full p-2.5 backdrop-blur-md"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </button>
 
@@ -139,7 +163,8 @@ const HomePage = () => {
                   </h2>
 
                   <p className="text-slate-400 text-sm md:text-base leading-relaxed mb-10 max-w-[280px] font-mono">
-                    Join elite community. Explore ideas. Design systems. Become a better engineer.
+                    Join elite community. Explore ideas. Design systems. Become a
+                    better engineer.
                   </p>
 
                   <div className="w-full flex flex-col gap-3">
@@ -170,8 +195,19 @@ const HomePage = () => {
                         className="flex-1 py-4 rounded-xl font-semibold text-slate-300 bg-transparent border border-transparent hover:text-white hover:bg-white/5 transition-all group flex items-center justify-center gap-2"
                       >
                         Guest
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-40 group-hover:opacity-100 group-hover:translate-x-1.5 group-hover:text-emerald-400 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 opacity-40 group-hover:opacity-100 group-hover:translate-x-1.5 group-hover:text-emerald-400 transition-all duration-300"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2.5}
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"
+                          />
                         </svg>
                       </motion.button>
                     </div>
