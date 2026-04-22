@@ -128,7 +128,7 @@ const AdminDashboard = () => {
     const { platformStats, allUsers, topTrendingImplementations, topTrendingIdeas } = data;
 
     return (
-        <div className="relative min-h-screen bg-slate-950 text-slate-200 font-sans overflow-hidden">
+        <main className="relative min-h-screen bg-slate-950 text-slate-200 font-sans overflow-hidden">
             {/* AMBIENT ADMIN BACKGROUND */}
             <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-900/10 blur-[150px] rounded-full pointer-events-none" />
             <div className="absolute top-[40%] left-[-20%] w-[60%] h-[40%] bg-indigo-900/10 blur-[150px] rounded-full pointer-events-none" />
@@ -174,10 +174,10 @@ const AdminDashboard = () => {
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 mb-16">
                     {/* Trending Ideas */}
                     <div className="space-y-6">
-                        <h3 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
+                        <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
                             <TrendingUp className="w-6 h-6 text-emerald-400" />
                             Trending Ideas
-                        </h3>
+                        </h2>
                         <div className="p-6 border bg-slate-900/40 backdrop-blur-md rounded-[2rem] border-white/5 space-y-4 shadow-xl">
                             {topTrendingIdeas.map((idea, index) => (
                                 <div key={idea.id} className="p-5 border border-white/5 rounded-2xl bg-slate-950/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-emerald-500/20 transition-all group">
@@ -186,18 +186,18 @@ const AdminDashboard = () => {
                                             #{index + 1}
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-white group-hover:text-emerald-300 transition-colors">{idea.title}</h4>
-                                            <p className="text-xs text-slate-500 mt-1">Creator: {idea.createdBy}</p>
+                                            <h3 className="font-bold text-white group-hover:text-emerald-300 transition-colors">{idea.title}</h3>
+                                            <p className="text-xs text-slate-400 mt-1">Creator: {idea.createdBy}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-6 sm:justify-end">
                                         <div className="text-center">
                                             <span className="block text-xl font-black text-blue-400">{idea.implementationCount}</span>
-                                            <span className="text-[10px] uppercase font-bold text-slate-500">Built</span>
+                                            <span className="text-[10px] uppercase font-bold text-slate-400">Built</span>
                                         </div>
                                         <div className="text-center">
                                             <span className="block text-xl font-black text-emerald-400">{idea.totalUpvotes}</span>
-                                            <span className="text-[10px] uppercase font-bold text-slate-500">Votes</span>
+                                            <span className="text-[10px] uppercase font-bold text-slate-400">Votes</span>
                                         </div>
                                     </div>
                                 </div>
@@ -207,10 +207,10 @@ const AdminDashboard = () => {
 
                     {/* Trending Implementations */}
                     <div className="space-y-6">
-                        <h3 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
+                        <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
                             <Award className="w-6 h-6 text-blue-400" />
                             Top Implementations
-                        </h3>
+                        </h2>
                         <div className="p-6 border bg-slate-900/40 backdrop-blur-md rounded-[2rem] border-white/5 space-y-4 shadow-xl">
                             {topTrendingImplementations.map((impl, index) => (
                                 <div key={impl.id} className="p-5 border border-white/5 rounded-2xl bg-slate-950/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-blue-500/20 transition-all group">
@@ -219,12 +219,12 @@ const AdminDashboard = () => {
                                             #{index + 1}
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-white group-hover:text-blue-300 transition-colors max-w-sm truncate" title={impl.ideaTitle}>
+                                            <h3 className="font-bold text-white group-hover:text-blue-300 transition-colors max-w-sm truncate" title={impl.ideaTitle}>
                                                 {impl.ideaTitle}
-                                            </h4>
+                                            </h3>
                                             <div className="flex items-center gap-2 mt-1">
                                                 <span className="text-xs font-mono text-slate-400 bg-white/5 px-2 py-0.5 rounded">{impl.language}</span>
-                                                <span className="text-xs text-slate-500">by {impl.submittedBy}</span>
+                                                <span className="text-xs text-slate-400">by {impl.submittedBy}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -233,11 +233,11 @@ const AdminDashboard = () => {
                                             <span className="block text-xl font-black text-amber-400 flex items-center justify-center gap-1">
                                                 {impl.stars} <Star className="w-4 h-4 fill-amber-400" />
                                             </span>
-                                            <span className="text-[10px] uppercase font-bold text-slate-500">Stars</span>
+                                            <span className="text-[10px] uppercase font-bold text-slate-400">Stars</span>
                                         </div>
                                         <div className="text-center">
                                             <span className="block text-xl font-black text-emerald-400">{impl.votes}</span>
-                                            <span className="text-[10px] uppercase font-bold text-slate-500">Votes</span>
+                                            <span className="text-[10px] uppercase font-bold text-slate-400">Votes</span>
                                         </div>
                                     </div>
                                 </div>
@@ -248,10 +248,10 @@ const AdminDashboard = () => {
 
                 {/* USER MANAGEMENT DIRECTORY */}
                 <div className="space-y-6">
-                    <h3 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
+                    <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
                         <Users className="w-6 h-6 text-indigo-400" />
                         Account Management Directory
-                    </h3>
+                    </h2>
 
                     <div className="border bg-slate-900/40 backdrop-blur-md rounded-[2rem] border-white/5 overflow-hidden shadow-2xl">
                         <div className="overflow-x-auto">
@@ -270,7 +270,7 @@ const AdminDashboard = () => {
                                         <tr key={user.id} className="border-b border-white/5 hover:bg-white/[0.03] transition-colors group">
                                             <td className="p-6">
                                                 <div className="font-bold text-white mb-1">{user.name}</div>
-                                                <div className="text-xs text-slate-500 font-mono">{user.email}</div>
+                                                <div className="text-xs text-slate-400 font-mono">{user.email}</div>
                                             </td>
                                             <td className="p-6">
                                                 <span className={`px-3 py-1 rounded-full text-[10px] font-black tracking-wider border ${user.role === 'ADMIN'
@@ -320,7 +320,7 @@ const AdminDashboard = () => {
                 </div>
 
             </div>
-        </div>
+        </main>
     );
 };
 
@@ -353,7 +353,7 @@ const StatCard = ({ icon, label, value, color, delay }) => {
             <div className={`mb-4 w-10 h-10 flex flex-col items-center justify-center rounded-xl bg-slate-950/50 border border-white/5 ${iconColor[color]}`}>
                 {icon}
             </div>
-            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 mb-2">{label}</p>
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-2">{label}</p>
             <div className="text-4xl font-black text-white tracking-tighter">{value}</div>
         </motion.div>
     );

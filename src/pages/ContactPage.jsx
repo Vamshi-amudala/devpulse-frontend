@@ -30,7 +30,7 @@ const ContactPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white pt-20 sm:pt-28 overflow-x-hidden">
+        <main className="min-h-screen bg-black text-white pt-20 sm:pt-28 overflow-x-hidden">
 
             {/* BACKGROUND GLOW */}
             <div className="fixed inset-0 -z-10 pointer-events-none">
@@ -140,6 +140,8 @@ const ContactPage = () => {
                             <img
                                 src="/images/contact.png"
                                 alt="developer working"
+                                width="800"
+                                height="600"
                                 className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition duration-500"
                             />
 
@@ -177,7 +179,7 @@ const ContactPage = () => {
 
                 </div>
             </section>
-        </div>
+        </main>
     );
 };
 

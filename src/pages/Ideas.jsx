@@ -394,7 +394,7 @@ const Ideas = () => {
                 />
             )}
 
-            <section className="min-h-screen bg-[#050505] px-4 sm:px-6 py-10 sm:py-12 pt-20 sm:pt-28 text-white md:px-12 lg:px-16">
+            <main className="min-h-screen bg-[#050505] px-4 sm:px-6 py-10 sm:py-12 pt-20 sm:pt-28 text-white md:px-12 lg:px-16">
                 <div className="mx-auto max-w-7xl">
 
                     {/* ── page header  */}
@@ -430,7 +430,7 @@ const Ideas = () => {
                         {/* filter label row */}
                         <div className="mb-4 flex items-center gap-2">
                             <SlidersHorizontal size={14} className="text-emerald-400" />
-                            <span className="text-xs font-bold uppercase tracking-widest text-slate-500">
+                            <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
                                 Filter &amp; Sort
                             </span>
                         </div>
@@ -440,15 +440,16 @@ const Ideas = () => {
                             <div className="relative xl:col-span-2">
                                 <Search
                                     size={14}
-                                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
+                                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
                                 />
                                 <input
                                     id="ideas-keyword-search"
                                     type="text"
+                                    aria-label="Search by title"
                                     value={searchInput}
                                     onChange={(e) => setSearchInput(e.target.value)}
                                     placeholder="Search by title…"
-                                    className="w-full rounded-2xl border border-white/10 bg-[#0b0f14] py-3 pl-10 pr-4 text-sm text-white outline-none placeholder:text-slate-500 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/20 transition"
+                                    className="w-full rounded-2xl border border-white/10 bg-[#0b0f14] py-3 pl-10 pr-4 text-sm text-white outline-none placeholder:text-slate-400 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/20 transition"
                                 />
                             </div>
 
@@ -456,15 +457,17 @@ const Ideas = () => {
                             <input
                                 id="ideas-techstack-filter"
                                 type="text"
+                                aria-label="Filter by tech stack"
                                 value={techInput}
                                 onChange={(e) => setTechInput(e.target.value)}
                                 placeholder="Tech stack (e.g. React)…"
-                                className="rounded-2xl border border-white/10 bg-[#0b0f14] px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/20 transition"
+                                className="rounded-2xl border border-white/10 bg-[#0b0f14] px-4 py-3 text-sm text-white outline-none placeholder:text-slate-400 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/20 transition"
                             />
 
                             {/* difficulty — no debounce needed for selects */}
                             <select
                                 id="ideas-difficulty-filter"
+                                aria-label="Filter by difficulty"
                                 value={difficulty}
                                 onChange={(e) => { setDifficulty(e.target.value); setPage(0); }}
                                 className="rounded-2xl border border-white/10 bg-[#0b0f14] px-4 py-3 text-sm text-white outline-none focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/20 transition"
@@ -478,6 +481,7 @@ const Ideas = () => {
                             {/* sort — no debounce needed for selects */}
                             <select
                                 id="ideas-sort-select"
+                                aria-label="Sort ideas"
                                 value={`${sortBy}:${direction}`}
                                 onChange={(e) => {
                                     const [s, d] = e.target.value.split(":");
@@ -500,7 +504,7 @@ const Ideas = () => {
 
                         {/* results row */}
                         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                            <p className="text-sm text-slate-500">
+                            <p className="text-sm text-slate-400">
                                 Showing{" "}
                                 <span className="text-slate-300">{ideas.length}</span>{" "}
                                 of{" "}
@@ -526,7 +530,7 @@ const Ideas = () => {
                             <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-slate-400">
                                 <Lightbulb size={24} />
                             </span>
-                            <h3 className="text-2xl font-semibold text-white">No ideas found</h3>
+                            <h2 className="text-2xl font-semibold text-white">No ideas found</h2>
                             <p className="mt-3 text-sm text-slate-400">
                                 Try different keywords, tech stack, or sort options.
                             </p>
@@ -589,14 +593,14 @@ const Ideas = () => {
                                             </div>
 
                                             {/* title */}
-                                            <h3
+                                            <h2
                                                 className={[
                                                     "font-bold tracking-tight text-slate-100 transition-colors duration-300 group-hover:text-emerald-400",
                                                     isFeatured ? "max-w-2xl text-3xl md:text-4xl" : "text-2xl",
                                                 ].join(" ")}
                                             >
                                                 {idea.title}
-                                            </h3>
+                                            </h2>
 
                                             {/* description */}
                                             <p
@@ -634,18 +638,18 @@ const Ideas = () => {
                                                 idea.totalImplementations !== undefined) && (
                                                     <div className="mt-5 flex gap-4">
                                                         {idea.totalVotes !== undefined && (
-                                                            <span className="text-[11px] font-semibold text-slate-500">
+                                                            <span className="text-[11px] font-semibold text-slate-400">
                                                                 ▲{" "}
-                                                                <span className="text-slate-400">
+                                                                <span className="text-slate-300">
                                                                     {idea.totalVotes}
                                                                 </span>{" "}
                                                                 votes
                                                             </span>
                                                         )}
                                                         {idea.totalImplementations !== undefined && (
-                                                            <span className="text-[11px] font-semibold text-slate-500">
+                                                            <span className="text-[11px] font-semibold text-slate-400">
                                                                 ⚙{" "}
-                                                                <span className="text-slate-400">
+                                                                <span className="text-slate-300">
                                                                     {idea.totalImplementations}
                                                                 </span>{" "}
                                                                 implementations
@@ -657,7 +661,7 @@ const Ideas = () => {
                                             {/* card footer */}
                                             <div className="mt-auto pt-7">
                                                 <div className="flex items-center justify-between border-t border-white/8 pt-5">
-                                                    <span className="text-xs text-slate-500">
+                                                    <span className="text-xs text-slate-400">
                                                         {idea.createdAt
                                                             ? new Date(idea.createdAt).toLocaleDateString("en-US", {
                                                                 month: "short",
@@ -715,7 +719,7 @@ const Ideas = () => {
                         </div>
                     )}
                 </div>
-            </section>
+            </main>
         </>
     );
 };

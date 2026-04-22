@@ -53,7 +53,7 @@ const Trending = () => {
     };
 
     return (
-        <div className="relative min-h-screen bg-slate-950 text-white overflow-hidden pb-24">
+        <main className="relative min-h-screen bg-slate-950 text-white overflow-hidden pb-24">
             {/* Background */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <img
@@ -150,7 +150,7 @@ const Trending = () => {
                             >
                                 <AlertCircle className="w-8 h-8 text-red-500 shrink-0 mt-0.5" />
                                 <div>
-                                    <h3 className="text-red-400 font-bold text-lg mb-1">Failed to load</h3>
+                                    <h2 className="text-red-400 font-bold text-lg mb-1">Failed to load</h2>
                                     <p className="text-slate-300">{error}</p>
                                 </div>
                             </motion.div>
@@ -163,8 +163,8 @@ const Trending = () => {
                                 className="text-center py-24 bg-slate-900/30 backdrop-blur-md rounded-3xl border border-white/5 max-w-3xl mx-auto"
                             >
                                 <TrendingUp size={48} className="text-slate-600 mx-auto mb-4" />
-                                <h3 className="text-2xl font-bold text-slate-300 mb-2">No trending data yet</h3>
-                                <p className="text-slate-500">
+                                <h2 className="text-2xl font-bold text-slate-300 mb-2">No trending data yet</h2>
+                                <p className="text-slate-400">
                                     {activeTab === "ideas"
                                         ? "Create new ideas and upvote existing ones to see them here!"
                                         : "Submit implementations and start voting to see the leaderboard!"}
@@ -249,7 +249,7 @@ const Trending = () => {
                                                             </span>
                                                         ))}
                                                         {item.techStack && item.techStack.split(',').length > 3 && (
-                                                            <span className="text-[11px] font-semibold text-slate-500">
+                                                            <span className="text-[11px] font-semibold text-slate-400">
                                                                 +{item.techStack.split(',').length - 3} more
                                                             </span>
                                                         )}
@@ -273,7 +273,7 @@ const Trending = () => {
                                                         )}
                                                     </div>
 
-                                                    <p className="text-sm text-slate-500 truncate">
+                                                    <p className="text-sm text-slate-400 truncate">
                                                         Idea:{" "}
                                                         <span className="text-slate-300 font-medium">{item.ideaTitle}</span>
                                                     </p>
@@ -341,13 +341,13 @@ const Trending = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.8 }}
-                        className="text-center text-xs font-semibold uppercase tracking-wider text-slate-600 mt-14"
+                        className="text-center text-xs font-semibold uppercase tracking-wider text-slate-400 mt-14"
                     >
                         Curated by community upvotes · Updated in real time
                     </motion.p>
                 )}
             </div>
-        </div >
+        </main >
     );
 };
 

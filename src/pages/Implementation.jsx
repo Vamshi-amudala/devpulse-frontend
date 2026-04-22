@@ -80,7 +80,7 @@ const Implementation = () => {
     };
 
     return (
-        <div className="relative min-h-screen bg-slate-950 text-white overflow-hidden pb-20">
+        <main className="relative min-h-screen bg-slate-950 text-white overflow-hidden pb-20">
             {/* Background */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <img
@@ -162,7 +162,7 @@ const Implementation = () => {
                         <div className="bg-red-500/10 border border-red-500/30 rounded-2xl p-8 max-w-2xl flex items-start gap-4 mx-auto mt-12 backdrop-blur-sm">
                             <AlertCircle className="w-8 h-8 text-red-500 shrink-0" />
                             <div>
-                                <h3 className="text-red-400 font-bold text-lg mb-2">Error Loading Data</h3>
+                                <h2 className="text-red-400 font-bold text-lg mb-2">Error Loading Data</h2>
                                 <p className="text-slate-300">{error}</p>
                             </div>
                         </div>
@@ -175,7 +175,7 @@ const Implementation = () => {
                             <div className="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-400">
                                 <Github size={36} />
                             </div>
-                            <h3 className="text-2xl font-bold text-white mb-3">No implementations yet</h3>
+                            <h2 className="text-2xl font-bold text-white mb-3">No implementations yet</h2>
                             <p className="text-slate-400 mb-8">
                                 Be the first developer to build and submit an implementation for this idea.
                                 Secure community votes and showcase your engineering skills!
@@ -207,10 +207,10 @@ const Implementation = () => {
                                     <div className="p-8 pb-6 flex-1 flex flex-col">
                                         <div className="flex justify-between items-start mb-6 gap-4">
                                             <div className="flex-1 min-w-0">
-                                                <h3 className="text-lg font-bold text-white truncate group-hover:text-emerald-400 transition-colors"
+                                                <h2 className="text-lg font-bold text-white truncate group-hover:text-emerald-400 transition-colors"
                                                     title={impl.repoName || impl.githubUrl || "Implementation"}>
                                                     {impl.repoName || impl.githubUrl || "Implementation"}
-                                                </h3>
+                                                </h2>
                                                 <div className="flex items-center text-xs text-slate-400 mt-3 space-x-3">
                                                     {impl.primaryLanguage && (
                                                         <span className="flex items-center bg-white/5 py-1 px-2.5 rounded-full border border-white/10">
@@ -253,7 +253,7 @@ const Implementation = () => {
                                                         <p className="text-sm font-semibold text-slate-200 truncate pr-2 max-w-[120px]">
                                                             {impl.submittedBy || "Anonymous"}
                                                         </p>
-                                                        <p className="text-xs text-slate-500 flex items-center mt-0.5">
+                                                        <p className="text-xs text-slate-400 flex items-center mt-0.5">
                                                             <Calendar size={10} className="mr-1" />
                                                             {formatDate(impl.createdAt)}
                                                         </p>
@@ -282,7 +282,7 @@ const Implementation = () => {
                     )}
                 </div>
             </div>
-        </div>
+        </main>
     );
 };
 

@@ -32,7 +32,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="pt-10">
+    <main className="pt-10">
       {/* HERO */}
       <motion.section
         className="relative flex min-h-screen flex-col md:flex-row items-center justify-between gap-8 md:gap-12 pt-8 md:pt-8 px-5 sm:px-10 md:px-20 overflow-hidden"
@@ -99,7 +99,9 @@ const HomePage = () => {
               WebkitMaskComposite: "source-in",
               filter: "drop-shadow(0 0 40px rgba(16, 185, 129, 0.3))",
             }}
-          />
+          >
+            <track kind="captions" srcLang="en" label="English" />
+          </video>
         </motion.div>
       </motion.section>
 
@@ -218,7 +220,7 @@ const HomePage = () => {
           </div>
         )}
       </AnimatePresence>
-    </div>
+    </main>
   );
 };
 

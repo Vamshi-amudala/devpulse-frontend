@@ -49,7 +49,7 @@ const Login = () => {
 
     return (
         /* ── Full-screen root ── */
-        <div className="relative min-h-screen bg-slate-950 text-white overflow-hidden">
+        <main className="relative min-h-screen bg-slate-950 text-white overflow-hidden">
 
 
             <div className="absolute inset-0 pointer-events-none z-0">
@@ -149,10 +149,11 @@ const Login = () => {
                             <form className="space-y-5" onSubmit={loginHandler}>
                                 <div className="space-y-4">
                                     <div className="group">
-                                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 group-focus-within:text-emerald-400 transition-colors">
+                                        <label htmlFor="email" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 group-focus-within:text-emerald-400 transition-colors">
                                             Email Address
                                         </label>
                                         <input
+                                            id="email"
                                             type="email"
                                             name="email"
                                             value={formData.email}
@@ -164,25 +165,29 @@ const Login = () => {
                                     </div>
 
                                     <div className="group relative">
-                                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 group-focus-within:text-emerald-400 transition-colors">
+                                        <label htmlFor="password" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 group-focus-within:text-emerald-400 transition-colors">
                                             Password
                                         </label>
-                                        <input
-                                            type={showPassword ? "text" : "password"}
-                                            name="password"
-                                            value={formData.password}
-                                            onChange={handleChange}
-                                            disabled={loading}
-                                            placeholder="••••••••"
-                                            className="w-full px-4 py-3.5 pr-12 bg-slate-900/80 border border-white/8 rounded-2xl text-white placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all font-mono tracking-widest text-sm"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-4 top-[38px] text-slate-400 hover:text-emerald-400 transition-colors"
-                                        >
-                                            {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-                                        </button>
+                                        <div className="relative">
+                                            <input
+                                                id="password"
+                                                type={showPassword ? "text" : "password"}
+                                                name="password"
+                                                value={formData.password}
+                                                onChange={handleChange}
+                                                disabled={loading}
+                                                placeholder="••••••••"
+                                                className="w-full px-4 py-3.5 pr-12 bg-slate-900/80 border border-white/8 rounded-2xl text-white placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all font-mono tracking-widest text-sm"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                aria-label={showPassword ? "Hide password" : "Show password"}
+                                                className="absolute inset-y-0 right-0 flex items-center justify-center w-12 min-h-[44px] text-slate-400 hover:text-emerald-400 transition-colors"
+                                            >
+                                                {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -221,7 +226,7 @@ const Login = () => {
                 </div>
 
             </div>
-        </div>
+        </main>
     );
 };
 

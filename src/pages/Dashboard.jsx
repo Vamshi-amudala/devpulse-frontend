@@ -101,7 +101,7 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="relative min-h-screen bg-slate-950 text-slate-200 font-sans overflow-hidden">
+        <main className="relative min-h-screen bg-slate-950 text-slate-200 font-sans overflow-hidden">
             {/* AMBIENT BACKGROUND */}
             <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-900/20 blur-[150px] rounded-full pointer-events-none" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-900/10 blur-[130px] rounded-full pointer-events-none" />
@@ -157,7 +157,7 @@ const Dashboard = () => {
                     >
                         <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-[80px] group-hover:bg-emerald-500/20 transition-all" />
                         <Lightbulb className="w-8 h-8 text-emerald-400 mb-6" />
-                        <p className="text-sm font-bold tracking-wider uppercase text-slate-500 mb-1">Total Ideas Created</p>
+                        <p className="text-sm font-bold tracking-wider uppercase text-slate-400 mb-1">Total Ideas Created</p>
                         <div className="flex items-end gap-3">
                             <span className="text-5xl font-black text-white tracking-tighter">{userInfo.totalIdeasCreated}</span>
                         </div>
@@ -171,7 +171,7 @@ const Dashboard = () => {
                     >
                         <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 blur-[80px] group-hover:bg-blue-500/20 transition-all" />
                         <Code className="w-8 h-8 text-blue-400 mb-6" />
-                        <p className="text-sm font-bold tracking-wider uppercase text-slate-500 mb-1">Implementations</p>
+                        <p className="text-sm font-bold tracking-wider uppercase text-slate-400 mb-1">Implementations</p>
                         <div className="flex items-end gap-3">
                             <span className="text-5xl font-black text-white tracking-tighter">{userInfo.totalImplementationsSubmitted}</span>
                         </div>
@@ -185,7 +185,7 @@ const Dashboard = () => {
                     >
                         <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/5 blur-[80px] group-hover:bg-violet-500/20 transition-all" />
                         <Activity className="w-8 h-8 text-violet-400 mb-6" />
-                        <p className="text-sm font-bold tracking-wider uppercase text-slate-500 mb-1">Total Engagement</p>
+                        <p className="text-sm font-bold tracking-wider uppercase text-slate-400 mb-1">Total Engagement</p>
                         <div className="flex items-end gap-3">
                             <span className="text-5xl font-black text-white tracking-tighter">
                                 {myIdeas.reduce((acc, curr) => acc + curr.totalUpvotes, 0)}
@@ -201,10 +201,10 @@ const Dashboard = () => {
                     {/* IDEAS COLUMN */}
                     <div className="space-y-6">
                         <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
+                            <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
                                 <Sparkles className="w-5 h-5 text-emerald-400" />
                                 My Blueprints
-                            </h3>
+                            </h2>
                             <button className="text-sm font-bold text-slate-400 hover:text-emerald-400 transition-colors uppercase tracking-widest flex items-center gap-1 group"
                                 onClick={() => navigate("/my-ideas")}
 
@@ -231,7 +231,7 @@ const Dashboard = () => {
                                         className="p-6 border bg-slate-900/60 backdrop-blur-md rounded-3xl border-white/5 hover:border-emerald-500/20 transition-all group flex flex-col cursor-pointer shadow-lg"
                                     >
                                         <div className="flex items-start justify-between mb-3">
-                                            <h4 className="text-xl font-bold text-white group-hover:text-emerald-300 transition-colors">{idea.title}</h4>
+                                            <h3 className="text-xl font-bold text-white group-hover:text-emerald-300 transition-colors">{idea.title}</h3>
                                             <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider ${idea.difficulty === 'EASY' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
                                                 idea.difficulty === 'MEDIUM' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
                                                     'bg-red-500/10 text-red-400 border border-red-500/20'
@@ -243,7 +243,7 @@ const Dashboard = () => {
                                             {idea.description}
                                         </p>
                                         <div className="pt-4 mt-auto border-t border-white/5 flex items-center justify-between font-mono text-xs">
-                                            <span className="text-slate-500 truncate max-w-[60%]">{idea.techStack}</span>
+                                            <span className="text-slate-400 truncate max-w-[60%]">{idea.techStack}</span>
                                             <div className="flex items-center gap-4 text-slate-400">
                                                 <span className="flex items-center gap-1.5"><Activity className="w-3 h-3 text-emerald-500" /> {idea.totalUpvotes}</span>
                                                 <span className="flex items-center gap-1.5"><Code className="w-3 h-3 text-blue-500" /> {idea.implementationCount}</span>
@@ -258,10 +258,10 @@ const Dashboard = () => {
                     {/* IMPLEMENTATIONS COLUMN */}
                     <div className="space-y-6">
                         <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
+                            <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
                                 <Code className="w-5 h-5 text-blue-400" />
                                 Active Implementations
-                            </h3>
+                            </h2>
                         </div>
 
                         {myImplementations.length === 0 ? (
@@ -276,7 +276,7 @@ const Dashboard = () => {
                             <div className="space-y-4">
                                 {myImplementations.map((impl) => (
                                     <div key={impl.id} className="p-6 border bg-slate-900/60 backdrop-blur-md rounded-3xl border-white/5">
-                                        <h4 className="text-lg font-bold text-white mb-2">{impl.repoUrl || 'Repository Submitted'}</h4>
+                                        <h3 className="text-lg font-bold text-white mb-2">{impl.repoUrl || 'Repository Submitted'}</h3>
                                         <p className="text-sm text-slate-400">Associated with Idea #{impl.ideaId}</p>
                                     </div>
                                 ))}
@@ -286,7 +286,7 @@ const Dashboard = () => {
 
                 </div>
             </div>
-        </div>
+        </main>
     );
 };
 

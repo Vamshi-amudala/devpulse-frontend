@@ -90,7 +90,7 @@ const MyIdeas = () => {
                     >
                         <Loader2 className="h-10 w-10 text-emerald-500" />
                     </motion.div>
-                    <p className="text-sm text-slate-500">Loading your ideas…</p>
+                    <p className="text-sm text-slate-400">Loading your ideas…</p>
                 </div>
             </div>
         );
@@ -117,7 +117,7 @@ const MyIdeas = () => {
     }
 
     return (
-        <section className="relative min-h-screen bg-[#050505] text-white overflow-hidden">
+        <main className="relative min-h-screen bg-[#050505] text-white overflow-hidden">
 
             <div className="pointer-events-none absolute -top-[20%] -left-[10%] h-[50%] w-[50%] rounded-full bg-emerald-900/15 blur-[160px]" />
             <div className="pointer-events-none absolute -bottom-[10%] -right-[10%] h-[40%] w-[40%] rounded-full bg-blue-900/10 blur-[140px]" />
@@ -184,7 +184,7 @@ const MyIdeas = () => {
                             >
                                 <div className={`pointer-events-none absolute top-0 right-0 h-28 w-28 bg-${accent}-500/5 blur-[80px] transition-all group-hover:bg-${accent}-500/15`} />
                                 {icon}
-                                <p className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
+                                <p className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
                                     {label}
                                 </p>
                                 <p className="mt-1 text-3xl font-black tracking-tighter text-white">
@@ -203,10 +203,10 @@ const MyIdeas = () => {
                         transition={{ duration: 0.5, delay: 0.1 }}
                         className="rounded-[2rem] border border-dashed border-white/10 bg-slate-900/20 px-6 py-24 text-center"
                     >
-                        <span className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-slate-500">
+                        <span className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-slate-400">
                             <Inbox size={28} />
                         </span>
-                        <h3 className="text-2xl font-bold text-white mb-3">No ideas yet</h3>
+                        <h2 className="text-2xl font-bold text-white mb-3">No ideas yet</h2>
                         <p className="text-sm text-slate-400 max-w-md mx-auto mb-8">
                             You haven't shared any project ideas with the community. Start by exploring existing ideas or create your own!
                         </p>
@@ -261,9 +261,9 @@ const MyIdeas = () => {
                                         </div>
 
                                         {/* title */}
-                                        <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-100 transition-colors duration-300 group-hover:text-emerald-400">
+                                        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-100 transition-colors duration-300 group-hover:text-emerald-400">
                                             {idea.title}
-                                        </h3>
+                                        </h2>
 
                                         {/* description */}
                                         <p className="mt-3 text-sm leading-relaxed text-slate-400 line-clamp-3">
@@ -292,16 +292,16 @@ const MyIdeas = () => {
 
                                         {/* stats row */}
                                         <div className="mt-5 flex gap-4">
-                                            <span className="text-[11px] font-semibold text-slate-500">
+                                            <span className="text-[11px] font-semibold text-slate-400">
                                                 ▲{" "}
-                                                <span className="text-slate-400">
+                                                <span className="text-slate-300">
                                                     {idea.totalUpvotes ?? idea.totalVotes ?? 0}
                                                 </span>{" "}
                                                 votes
                                             </span>
-                                            <span className="text-[11px] font-semibold text-slate-500">
+                                            <span className="text-[11px] font-semibold text-slate-400">
                                                 ⚙{" "}
-                                                <span className="text-slate-400">
+                                                <span className="text-slate-300">
                                                     {idea.implementationCount ?? idea.totalImplementations ?? 0}
                                                 </span>{" "}
                                                 implementations
@@ -311,7 +311,7 @@ const MyIdeas = () => {
                                         {/* card footer */}
                                         <div className="mt-auto pt-6">
                                             <div className="flex items-center justify-between border-t border-white/8 pt-5">
-                                                <span className="text-xs text-slate-500">
+                                                <span className="text-xs text-slate-400">
                                                     {idea.createdAt
                                                         ? new Date(idea.createdAt).toLocaleDateString("en-US", {
                                                             month: "short",
@@ -333,7 +333,7 @@ const MyIdeas = () => {
                     </motion.div>
                 )}
             </div>
-        </section>
+        </main>
     );
 };
 

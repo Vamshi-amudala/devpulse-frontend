@@ -50,7 +50,7 @@ const Register = () => {
 
     return (
         /* ── Full-screen root ── */
-        <div className="relative min-h-screen bg-slate-950 text-white overflow-hidden">
+        <main className="relative min-h-screen bg-slate-950 text-white overflow-hidden">
 
 
             <div className="absolute inset-0 pointer-events-none z-0">
@@ -157,10 +157,11 @@ const Register = () => {
                                 <div className="space-y-3">
                                     {/* Name */}
                                     <div className="group">
-                                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 group-focus-within:text-emerald-400 transition-colors">
+                                        <label htmlFor="name" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 group-focus-within:text-emerald-400 transition-colors">
                                             Full Name
                                         </label>
                                         <input
+                                            id="name"
                                             type="text"
                                             name="name"
                                             value={formData.name}
@@ -173,10 +174,11 @@ const Register = () => {
 
                                     {/* Email */}
                                     <div className="group">
-                                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 group-focus-within:text-emerald-400 transition-colors">
+                                        <label htmlFor="email" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 group-focus-within:text-emerald-400 transition-colors">
                                             Email Address
                                         </label>
                                         <input
+                                            id="email"
                                             type="email"
                                             name="email"
                                             value={formData.email}
@@ -189,11 +191,12 @@ const Register = () => {
 
                                     {/* Password */}
                                     <div className="group">
-                                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 group-focus-within:text-emerald-400 transition-colors">
+                                        <label htmlFor="password" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 group-focus-within:text-emerald-400 transition-colors">
                                             Password
                                         </label>
                                         <div className="relative">
                                             <input
+                                                id="password"
                                                 type={showPassword ? "text" : "password"}
                                                 name="password"
                                                 value={formData.password}
@@ -205,7 +208,8 @@ const Register = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => setShowPassword(!showPassword)}
-                                                className="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400 hover:text-emerald-400 focus:outline-none transition-colors"
+                                                aria-label={showPassword ? "Hide password" : "Show password"}
+                                                className="absolute inset-y-0 right-0 flex items-center justify-center w-12 min-h-[44px] text-slate-400 hover:text-emerald-400 focus:outline-none transition-colors"
                                             >
                                                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                             </button>
@@ -244,7 +248,7 @@ const Register = () => {
                 </div>
 
             </div>
-        </div>
+        </main>
     );
 };
 

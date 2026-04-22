@@ -82,7 +82,7 @@ const AboutPage = () => {
 
     return (
 
-        <div className="relative min-h-screen bg-black text-white overflow-hidden">
+        <main className="relative min-h-screen bg-black text-white overflow-hidden">
             {/* Background glow */}
             <div className="absolute inset-0 -z-10 pointer-events-none">
                 <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
@@ -169,7 +169,9 @@ const AboutPage = () => {
                                 <img
                                     src="/images/idea.png"
                                     alt="Developer illustration"
-                                    className="relative z-10 w-full rounded-[1.5rem] object-cover max-h-[260px] sm:max-h-none"
+                                    width="800"
+                                    height="600"
+                                    className="relative z-10 w-full rounded-[1.5rem] object-cover max-h-[260px] sm:max-h-none h-auto"
                                 />
                             </div>
                         </motion.div>
@@ -191,7 +193,9 @@ const AboutPage = () => {
                         <img
                             src="/images/team.png"
                             alt="Developer collaboration"
-                            className="relative rounded-[2rem] border border-white/10"
+                            width="800"
+                            height="600"
+                            className="relative rounded-[2rem] border border-white/10 w-full h-auto"
                         />
                     </motion.div>
 
@@ -312,7 +316,9 @@ const AboutPage = () => {
                         <img
                             src="/images/share.png"
                             alt="Sharing ideas"
-                            className="relative rounded-[2rem] border border-white/10"
+                            width="800"
+                            height="600"
+                            className="relative rounded-[2rem] border border-white/10 w-full h-auto"
                         />
                     </motion.div>
 
@@ -410,7 +416,7 @@ const AboutPage = () => {
                     </button>
                 </motion.div>
             </section>
-        </div>
+        </main>
     );
 };
 
