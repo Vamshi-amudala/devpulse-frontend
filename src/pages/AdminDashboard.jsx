@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
     LayoutDashboard,
@@ -14,7 +14,9 @@ import {
     LogOut,
     CheckCircle2,
     Star,
-    Award
+    Award,
+    Loader2,
+    ChevronRight,
 } from "lucide-react";
 
 const AdminDashboard = () => {
@@ -22,29 +24,30 @@ const AdminDashboard = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    // user delete
     const [deleteLoadingId, setDeleteLoadingId] = useState(null);
+    const [deletingUserId, setDeletingUserId] = useState(null);
+    // idea delete
+    const [allIdeas, setAllIdeas] = useState([]);
+    const [deletingIdeaId, setDeletingIdeaId] = useState(null);
+    const [deleteIdeaLoadingId, setDeleteIdeaLoadingId] = useState(null);
+    // impl delete
+    const [deletingImplId, setDeletingImplId] = useState(null);
+    const [deleteImplLoadingId, setDeleteImplLoadingId] = useState(null);
 
     const fetchAdminData = async () => {
         const token = localStorage.getItem("token");
-
-        if (!token) {
-            navigate("/login");
-            return;
-        }
+        if (!token) { navigate("/login"); return; }
 
         try {
             const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
             const response = await axios.get(`${API}/api/admin/dashboard`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                headers: { Authorization: `Bearer ${token}` },
             });
             setData(response.data);
         } catch (err) {
             setError("Failed to load admin dashboard. You might not have the required permissions.");
             if (err.response && (err.response.status === 401 || err.response.status === 403)) {
-                // Not authorized or invalid token
                 localStorage.removeItem("token");
                 navigate("/login");
             }
@@ -53,38 +56,73 @@ const AdminDashboard = () => {
         }
     };
 
-    useEffect(() => {
-        fetchAdminData();
-    }, [navigate]);
+    const fetchAllIdeas = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        try {
+            const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
+            const res = await axios.get(`${API}/api/admin/ideas`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setAllIdeas(res.data || []);
+        } catch (err) {
+            console.error("Failed to fetch admin ideas:", err);
+        }
+    };
 
-    const handleDeleteUser = async (userId, userName) => {
-        const confirmation = window.confirm(`Are you absolutely sure you want to permanently delete the user ${userName}? This action cannot be undone.`);
+    useEffect(() => { fetchAdminData(); fetchAllIdeas(); }, [navigate]);
 
-        if (!confirmation) return;
+    const handleDeleteUser = async (userId) => {
+        const token = localStorage.getItem("token");
+        if (!token) { navigate("/login"); return; }
 
         setDeleteLoadingId(userId);
-
         try {
-            const token = localStorage.getItem("token");
             const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
-
             await axios.delete(`${API}/api/admin/users/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers: { Authorization: `Bearer ${token}` },
             });
-
-            // Filter out the deleted user to instantly update the UI
-            setData((prevData) => ({
-                ...prevData,
-                allUsers: prevData.allUsers.filter(user => user.id !== userId)
+            setData((prev) => ({
+                ...prev,
+                allUsers: prev.allUsers.filter((u) => u.id !== userId),
             }));
-
+            setDeletingUserId(null);
         } catch (err) {
-            alert(`Failed to delete user: ${err.response?.data?.message || err.message}`);
+            console.error("Delete failed:", err);
         } finally {
             setDeleteLoadingId(null);
         }
+    };
+
+    const handleDeleteIdea = async (ideaId) => {
+        const token = localStorage.getItem("token");
+        setDeleteIdeaLoadingId(ideaId);
+        try {
+            const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
+            await axios.delete(`${API}/api/admin/ideas/${ideaId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setAllIdeas((prev) => prev.filter((i) => i.id !== ideaId));
+            setDeletingIdeaId(null);
+        } catch (err) { console.error(err); }
+        finally { setDeleteIdeaLoadingId(null); }
+    };
+
+    const handleDeleteImpl = async (implId) => {
+        const token = localStorage.getItem("token");
+        setDeleteImplLoadingId(implId);
+        try {
+            const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
+            await axios.delete(`${API}/api/admin/implementations/${implId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setData((prev) => ({
+                ...prev,
+                topTrendingImplementations: prev.topTrendingImplementations.filter((i) => i.id !== implId),
+            }));
+            setDeletingImplId(null);
+        } catch (err) { console.error(err); }
+        finally { setDeleteImplLoadingId(null); }
     };
 
     const handleLogout = () => {
@@ -92,31 +130,43 @@ const AdminDashboard = () => {
         navigate("/login");
     };
 
+    /* ── Loading ───────────────────────────────────────────── */
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-slate-950">
+            <div
+                className="flex items-center justify-center min-h-screen"
+                style={{ background: `url('/images/admin.png') center/cover no-repeat fixed` }}
+            >
+                <div className="absolute inset-0 bg-black/80" />
                 <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                    className="relative flex flex-col items-center gap-4"
+                    animate={{ opacity: [0.4, 1, 0.4] }}
+                    transition={{ repeat: Infinity, duration: 1.8 }}
                 >
-                    <Zap className="w-12 h-12 text-blue-500" />
+                    <Loader2 className="w-10 h-10 text-red-400 animate-spin" />
+                    <p className="text-sm text-white/50">Loading command center…</p>
                 </motion.div>
             </div>
         );
     }
 
+    /* ── Error ─────────────────────────────────────────────── */
     if (error) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-slate-950 px-4">
-                <div className="max-w-xl p-10 bg-red-950/20 border border-red-500/30 rounded-3xl backdrop-blur-xl text-center">
-                    <ShieldAlert className="w-16 h-16 text-red-500 mx-auto mb-6" />
-                    <h2 className="mb-4 text-3xl font-black text-red-400 tracking-tight">Access Denied</h2>
-                    <p className="mb-8 text-slate-300 leading-relaxed">{error}</p>
+            <div
+                className="flex items-center justify-center min-h-screen px-4"
+                style={{ background: `url('/images/admin.png') center/cover no-repeat fixed` }}
+            >
+                <div className="absolute inset-0 bg-black/80" />
+                <div className="relative max-w-md w-full rounded-2xl border border-red-500/20 bg-black/40 backdrop-blur-md p-10 text-center">
+                    <ShieldAlert className="w-12 h-12 text-red-400 mx-auto mb-5" />
+                    <h2 className="mb-3 text-2xl font-bold text-red-400">Access Denied</h2>
+                    <p className="mb-8 text-white/50 text-sm">{error}</p>
                     <button
                         onClick={handleLogout}
-                        className="px-8 py-4 text-sm font-bold text-black uppercase transition-all bg-red-500 rounded-xl hover:bg-red-400"
+                        className="rounded-xl bg-red-500 px-6 py-3 text-sm font-bold text-black transition hover:bg-red-400 active:scale-95"
                     >
-                        Return to Safety
+                        Return to Login
                     </button>
                 </div>
             </div>
@@ -127,235 +177,399 @@ const AdminDashboard = () => {
 
     const { platformStats, allUsers, topTrendingImplementations, topTrendingIdeas } = data;
 
+    const stats = [
+        { label: "Total Users",         value: platformStats.totalUsers,            icon: Users,        hover: "hover:border-red-400/30 hover:bg-red-500/10 hover:scale-[1.03]",    iconColor: "text-red-400/70" },
+        { label: "Global Ideas",         value: platformStats.totalIdeas,            icon: Lightbulb,    hover: "hover:border-amber-400/30 hover:bg-amber-500/10 hover:scale-[1.03]", iconColor: "text-amber-400/70" },
+        { label: "Implementations",      value: platformStats.totalImplementations,  icon: Code,         hover: "hover:border-orange-400/30 hover:bg-orange-500/10 hover:scale-[1.03]",iconColor: "text-orange-400/70" },
+        { label: "Votes Cast",           value: platformStats.totalVotes,            icon: Zap,          hover: "hover:border-rose-400/30 hover:bg-rose-500/10 hover:scale-[1.03]",   iconColor: "text-rose-400/70" },
+        { label: "Active This Month",    value: platformStats.activeUsersThisMonth,  icon: CheckCircle2, hover: "hover:border-red-400/30 hover:bg-red-500/10 hover:scale-[1.03]",    iconColor: "text-red-300/70" },
+    ];
+
     return (
-        <main className="relative min-h-screen bg-slate-950 text-slate-200 font-sans overflow-hidden">
-            {/* AMBIENT ADMIN BACKGROUND */}
-            <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-900/10 blur-[150px] rounded-full pointer-events-none" />
-            <div className="absolute top-[40%] left-[-20%] w-[60%] h-[40%] bg-indigo-900/10 blur-[150px] rounded-full pointer-events-none" />
+        <>
+            {/* Fixed background */}
+            <div
+                className="fixed inset-0 -z-10"
+                style={{ background: `url('/images/admin.png') center/cover no-repeat` }}
+            />
+            {/* Dark overlay */}
+            <div className="fixed inset-0 -z-10 bg-black/70" />
 
-            <div className="relative z-10 max-w-[90rem] mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:px-12">
+            <main className="min-h-screen text-white">
+                <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pt-24 sm:pt-28 pb-20">
 
-                {/* HEADER */}
-                <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-12 border-b border-white/5 pb-6 sm:pb-8"
-                >
-                    <div className="flex items-center gap-5">
-                        <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-2xl">
-                            <LayoutDashboard className="w-8 h-8 text-blue-400" />
-                        </div>
-                        <div>
-                            <span className="text-[10px] uppercase font-black tracking-[0.3em] text-blue-500 mb-1 block">Command Center</span>
-                            <h1 className="text-4xl font-black text-white tracking-tight">System Admin</h1>
-                        </div>
-                    </div>
-
-                    <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-2 px-6 py-3 text-sm font-bold transition-all border rounded-xl text-slate-300 border-white/10 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30 active:scale-95 group"
+                    {/* ── Header ───────────────────────────────────────── */}
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4 }}
+                        className="flex items-center justify-between mb-10"
                     >
-                        <LogOut className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-                        End Session
-                    </button>
-                </motion.div>
-
-                {/* PLATFORM STATS */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 mb-12 sm:mb-16">
-                    {/* Stat Cards */}
-                    <StatCard icon={<Users />} label="Total Users" value={platformStats.totalUsers} color="blue" delay={0.1} />
-                    <StatCard icon={<Lightbulb />} label="Global Ideas" value={platformStats.totalIdeas} color="emerald" delay={0.15} />
-                    <StatCard icon={<Code />} label="Implementations" value={platformStats.totalImplementations} color="violet" delay={0.2} />
-                    <StatCard icon={<Zap />} label="Total Votes Cast" value={platformStats.totalVotes} color="amber" delay={0.25} />
-                    <StatCard icon={<CheckCircle2 />} label="Active This Month" value={platformStats.activeUsersThisMonth} color="rose" delay={0.3} />
-                </div>
-
-                {/* TRENDING SPLIT */}
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 mb-16">
-                    {/* Trending Ideas */}
-                    <div className="space-y-6">
-                        <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
-                            <TrendingUp className="w-6 h-6 text-emerald-400" />
-                            Trending Ideas
-                        </h2>
-                        <div className="p-6 border bg-slate-900/40 backdrop-blur-md rounded-[2rem] border-white/5 space-y-4 shadow-xl">
-                            {topTrendingIdeas.map((idea, index) => (
-                                <div key={idea.id} className="p-5 border border-white/5 rounded-2xl bg-slate-950/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-emerald-500/20 transition-all group">
-                                    <div className="flex items-start gap-4">
-                                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 font-black text-sm">
-                                            #{index + 1}
-                                        </div>
-                                        <div>
-                                            <h3 className="font-bold text-white group-hover:text-emerald-300 transition-colors">{idea.title}</h3>
-                                            <p className="text-xs text-slate-400 mt-1">Creator: {idea.createdBy}</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-6 sm:justify-end">
-                                        <div className="text-center">
-                                            <span className="block text-xl font-black text-blue-400">{idea.implementationCount}</span>
-                                            <span className="text-[10px] uppercase font-bold text-slate-400">Built</span>
-                                        </div>
-                                        <div className="text-center">
-                                            <span className="block text-xl font-black text-emerald-400">{idea.totalUpvotes}</span>
-                                            <span className="text-[10px] uppercase font-bold text-slate-400">Votes</span>
-                                        </div>
-                                    </div>
+                        <div>
+                            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-red-400/80 mb-1">
+                                Command Center
+                            </p>
+                            <div className="flex items-center gap-3">
+                                <div className="h-8 w-8 rounded-lg bg-red-500/15 border border-red-500/20 flex items-center justify-center">
+                                    <LayoutDashboard size={15} className="text-red-400" />
                                 </div>
-                            ))}
+                                <h1 className="text-xl font-bold text-white/90">System Admin</h1>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Trending Implementations */}
-                    <div className="space-y-6">
-                        <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
-                            <Award className="w-6 h-6 text-blue-400" />
-                            Top Implementations
-                        </h2>
-                        <div className="p-6 border bg-slate-900/40 backdrop-blur-md rounded-[2rem] border-white/5 space-y-4 shadow-xl">
-                            {topTrendingImplementations.map((impl, index) => (
-                                <div key={impl.id} className="p-5 border border-white/5 rounded-2xl bg-slate-950/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-blue-500/20 transition-all group">
-                                    <div className="flex items-start gap-4">
-                                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 font-black text-sm">
-                                            #{index + 1}
-                                        </div>
-                                        <div>
-                                            <h3 className="font-bold text-white group-hover:text-blue-300 transition-colors max-w-sm truncate" title={impl.ideaTitle}>
-                                                {impl.ideaTitle}
-                                            </h3>
-                                            <div className="flex items-center gap-2 mt-1">
-                                                <span className="text-xs font-mono text-slate-400 bg-white/5 px-2 py-0.5 rounded">{impl.language}</span>
-                                                <span className="text-xs text-slate-400">by {impl.submittedBy}</span>
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-sm text-white/50 hover:text-red-400 hover:border-red-500/30 hover:bg-red-500/8 transition group"
+                        >
+                            <LogOut size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+                            End Session
+                        </button>
+                    </motion.div>
+
+                    {/* ── Stats row ────────────────────────────────────── */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.45, delay: 0.1 }}
+                        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-10"
+                    >
+                        {stats.map(({ label, value, icon: Icon, hover, iconColor }) => (
+                            <div
+                                key={label}
+                                className={`rounded-2xl border border-white/10 bg-black/30 backdrop-blur-md px-4 py-4 cursor-default transition-all duration-200 ${hover}`}
+                            >
+                                <Icon size={14} className={`${iconColor} mb-3`} />
+                                <p className="text-2xl font-bold text-white tabular-nums">{value ?? "—"}</p>
+                                <p className="mt-1 text-[11px] text-white/40 leading-tight">{label}</p>
+                            </div>
+                        ))}
+                    </motion.div>
+
+                    {/* ── Trending 2-col ────────────────────────────────── */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+
+                        {/* Trending Ideas */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 14 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.45, delay: 0.15 }}
+                        >
+                            <div className="rounded-2xl border border-white/10 bg-black/30 backdrop-blur-md p-5">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h2 className="text-sm font-semibold text-white/80 flex items-center gap-2">
+                                        <TrendingUp size={14} className="text-red-400/70" />
+                                        Trending Ideas
+                                    </h2>
+                                    <span className="text-[10px] text-white/30 uppercase tracking-wider">by votes</span>
+                                </div>
+
+                                <div className="space-y-2">
+                                    {topTrendingIdeas?.map((idea, i) => (
+                                        <div
+                                            key={idea.id}
+                                            className="group flex items-center justify-between gap-3 rounded-xl border border-white/8 bg-white/[0.03] hover:bg-white/[0.06] hover:border-red-400/20 px-4 py-3 transition"
+                                        >
+                                            <div className="flex items-center gap-3 min-w-0">
+                                                <span className="shrink-0 text-[10px] font-bold text-white/25 w-4 text-right">
+                                                    {i + 1}
+                                                </span>
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-medium text-white/80 group-hover:text-white truncate transition">
+                                                        {idea.title}
+                                                    </p>
+                                                    <p className="text-[11px] text-white/30 truncate">{idea.createdBy}</p>
+                                                </div>
+                                            </div>
+                                            <div className="shrink-0 flex items-center gap-3 text-xs">
+                                                <span className="text-amber-400/80 font-semibold tabular-nums">{idea.totalUpvotes ?? 0} ▲</span>
+                                                <span className="text-white/25">{idea.implementationCount ?? 0} impl</span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="flex items-center gap-6 sm:justify-end">
-                                        <div className="text-center">
-                                            <span className="block text-xl font-black text-amber-400 flex items-center justify-center gap-1">
-                                                {impl.stars} <Star className="w-4 h-4 fill-amber-400" />
-                                            </span>
-                                            <span className="text-[10px] uppercase font-bold text-slate-400">Stars</span>
-                                        </div>
-                                        <div className="text-center">
-                                            <span className="block text-xl font-black text-emerald-400">{impl.votes}</span>
-                                            <span className="text-[10px] uppercase font-bold text-slate-400">Votes</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* USER MANAGEMENT DIRECTORY */}
-                <div className="space-y-6">
-                    <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
-                        <Users className="w-6 h-6 text-indigo-400" />
-                        Account Management Directory
-                    </h2>
-
-                    <div className="border bg-slate-900/40 backdrop-blur-md rounded-[2rem] border-white/5 overflow-hidden shadow-2xl">
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left border-collapse">
-                                <thead>
-                                    <tr className="bg-white/5 text-[10px] uppercase font-black tracking-widest text-slate-400 border-b border-white/10">
-                                        <th className="p-6">User / Email</th>
-                                        <th className="p-6">Role</th>
-                                        <th className="p-6">Contributions (Id. / Im.)</th>
-                                        <th className="p-6">Total Impact</th>
-                                        <th className="p-6 text-right">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {allUsers.map((user) => (
-                                        <tr key={user.id} className="border-b border-white/5 hover:bg-white/[0.03] transition-colors group">
-                                            <td className="p-6">
-                                                <div className="font-bold text-white mb-1">{user.name}</div>
-                                                <div className="text-xs text-slate-400 font-mono">{user.email}</div>
-                                            </td>
-                                            <td className="p-6">
-                                                <span className={`px-3 py-1 rounded-full text-[10px] font-black tracking-wider border ${user.role === 'ADMIN'
-                                                        ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
-                                                        : 'bg-slate-800 text-slate-300 border-slate-700'
-                                                    }`}>
-                                                    {user.role}
-                                                </span>
-                                            </td>
-                                            <td className="p-6">
-                                                <div className="flex items-center gap-4 text-sm font-bold font-mono">
-                                                    <span className="text-emerald-400 tooltip" title="Ideas Created">{user.ideasCreated} I.</span>
-                                                    <span className="text-slate-600">/</span>
-                                                    <span className="text-blue-400 tooltip" title="Implementations Submitted">{user.implementationsSubmitted} Im.</span>
-                                                </div>
-                                            </td>
-                                            <td className="p-6">
-                                                <div className="text-sm font-bold text-amber-400 flex items-center gap-1.5">
-                                                    <Zap className="w-4 h-4" /> {user.upvotesReceived}
-                                                </div>
-                                            </td>
-                                            <td className="p-6 text-right">
-                                                <button
-                                                    onClick={() => handleDeleteUser(user.id, user.name)}
-                                                    disabled={user.role === 'ADMIN' || deleteLoadingId === user.id}
-                                                    className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center gap-2 ml-auto ${user.role === 'ADMIN'
-                                                            ? 'bg-slate-800/50 text-slate-600 cursor-not-allowed'
-                                                            : 'bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-black border border-red-500/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.4)]'
-                                                        }`}
-                                                >
-                                                    {deleteLoadingId === user.id ? (
-                                                        <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}>
-                                                            <Zap className="w-4 h-4" />
-                                                        </motion.div>
-                                                    ) : (
-                                                        <Trash2 className="w-4 h-4" />
-                                                    )}
-                                                    Eliminate
-                                                </button>
-                                            </td>
-                                        </tr>
                                     ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                </div>
+                            </div>
+                        </motion.div>
+
+                        {/* Trending Implementations */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 14 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.45, delay: 0.2 }}
+                        >
+                            <div className="rounded-2xl border border-white/10 bg-black/30 backdrop-blur-md p-5">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h2 className="text-sm font-semibold text-white/80 flex items-center gap-2">
+                                        <Award size={14} className="text-orange-400/70" />
+                                        Top Implementations
+                                    </h2>
+                                    <span className="text-[10px] text-white/30 uppercase tracking-wider">by votes</span>
+                                </div>
+
+                                <div className="space-y-2">
+                                    {topTrendingImplementations?.map((impl, i) => (
+                                        <div
+                                            key={impl.id}
+                                            className="group flex items-center justify-between gap-3 rounded-xl border border-white/8 bg-white/[0.03] hover:bg-white/[0.06] hover:border-orange-400/20 px-4 py-3 transition"
+                                        >
+                                            <div className="flex items-center gap-3 min-w-0">
+                                                <span className="shrink-0 text-[10px] font-bold text-white/25 w-4 text-right">
+                                                    {i + 1}
+                                                </span>
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-medium text-white/80 group-hover:text-white truncate transition">
+                                                        {impl.ideaTitle}
+                                                    </p>
+                                                    <div className="flex items-center gap-2 mt-0.5">
+                                                        {impl.language && (
+                                                            <span className="text-[10px] font-mono text-white/30 bg-white/5 px-1.5 py-0.5 rounded">
+                                                                {impl.language}
+                                                            </span>
+                                                        )}
+                                                        <span className="text-[11px] text-white/30">{impl.submittedBy}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="shrink-0 flex items-center gap-3 text-xs">
+                                                <span className="text-amber-400/80 font-semibold flex items-center gap-1">
+                                                    {impl.stars ?? 0} <Star size={10} className="fill-amber-400/50" />
+                                                </span>
+                                                <span className="text-white/25">{impl.votes ?? 0} votes</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </motion.div>
                     </div>
+
+                    {/* ── User Management ───────────────────────────────── */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 14 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.45, delay: 0.25 }}
+                    >
+                        <div className="rounded-2xl border border-white/10 bg-black/30 backdrop-blur-md p-5">
+                            <div className="flex items-center justify-between mb-5">
+                                <h2 className="text-sm font-semibold text-white/80 flex items-center gap-2">
+                                    <Users size={14} className="text-red-400/70" />
+                                    User Management
+                                    <span className="text-xs font-normal text-white/30 ml-1">({allUsers?.length ?? 0})</span>
+                                </h2>
+                            </div>
+
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr className="border-b border-white/8 text-[10px] uppercase tracking-widest text-white/30">
+                                            <th className="pb-3 px-1 font-semibold">User</th>
+                                            <th className="pb-3 px-1 font-semibold">Role</th>
+                                            <th className="pb-3 px-1 font-semibold">Ideas</th>
+                                            <th className="pb-3 px-1 font-semibold">Impls</th>
+                                            <th className="pb-3 px-1 font-semibold">Votes ▲</th>
+                                            <th className="pb-3 px-1 font-semibold text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <AnimatePresence>
+                                            {allUsers?.map((user) => {
+                                                const isConfirming = deletingUserId === user.id;
+                                                const isDeleting = deleteLoadingId === user.id;
+                                                const isAdmin = user.role === "ADMIN";
+
+                                                return (
+                                                    <motion.tr
+                                                        key={user.id}
+                                                        layout
+                                                        exit={{ opacity: 0, height: 0 }}
+                                                        className="border-b border-white/5 hover:bg-white/[0.02] transition group"
+                                                    >
+                                                        <td className="py-3.5 px-1">
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="h-7 w-7 rounded-full bg-gradient-to-br from-red-500/30 to-black flex items-center justify-center text-xs font-bold text-red-300 shrink-0 uppercase">
+                                                                    {(user.name || "?")[0]}
+                                                                </div>
+                                                                <div className="min-w-0">
+                                                                    <p className="text-sm font-medium text-white/85 truncate">{user.name}</p>
+                                                                    <p className="text-[11px] text-white/30 font-mono truncate max-w-[160px]">{user.email}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="py-3.5 px-1">
+                                                            <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider border ${
+                                                                isAdmin
+                                                                    ? "text-red-400 bg-red-500/10 border-red-500/20"
+                                                                    : "text-white/40 bg-white/5 border-white/10"
+                                                            }`}>
+                                                                {user.role}
+                                                            </span>
+                                                        </td>
+                                                        <td className="py-3.5 px-1 text-sm text-white/60 tabular-nums">{user.ideasCreated ?? 0}</td>
+                                                        <td className="py-3.5 px-1 text-sm text-white/60 tabular-nums">{user.implementationsSubmitted ?? 0}</td>
+                                                        <td className="py-3.5 px-1 text-sm text-amber-400/70 tabular-nums font-semibold">{user.upvotesReceived ?? 0}</td>
+                                                        <td className="py-3.5 px-1 text-right">
+                                                            {isAdmin ? (
+                                                                <span className="text-[10px] text-white/20 italic">Protected</span>
+                                                            ) : isConfirming ? (
+                                                                <div className="flex items-center justify-end gap-2" onClick={(e) => e.stopPropagation()}>
+                                                                    <button
+                                                                        onClick={() => setDeletingUserId(null)}
+                                                                        className="px-2.5 py-1 rounded-lg border border-white/10 text-[11px] text-white/40 hover:text-white transition"
+                                                                    >
+                                                                        Cancel
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => handleDeleteUser(user.id)}
+                                                                        disabled={isDeleting}
+                                                                        className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-500 text-[11px] font-semibold text-white hover:bg-red-400 disabled:opacity-60 transition"
+                                                                    >
+                                                                        {isDeleting ? <Loader2 size={11} className="animate-spin" /> : <Trash2 size={11} />}
+                                                                        {isDeleting ? "…" : "Delete"}
+                                                                    </button>
+                                                                </div>
+                                                            ) : (
+                                                                <button
+                                                                    onClick={() => setDeletingUserId(user.id)}
+                                                                    className="flex items-center gap-1.5 ml-auto px-3 py-1.5 rounded-lg border border-white/8 bg-white/[0.03] text-[11px] text-white/35 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 transition"
+                                                                >
+                                                                    <Trash2 size={11} />
+                                                                    Remove
+                                                                </button>
+                                                            )}
+                                                        </td>
+                                                    </motion.tr>
+                                                );
+                                            })}
+                                        </AnimatePresence>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* ── Ideas Management ──────────────────────────────── */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 14 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.45, delay: 0.3 }}
+                        className="mt-5"
+                    >
+                        <div className="rounded-2xl border border-white/10 bg-black/30 backdrop-blur-md p-5">
+                            <div className="flex items-center justify-between mb-5">
+                                <h2 className="text-sm font-semibold text-white/80 flex items-center gap-2">
+                                    <Lightbulb size={14} className="text-amber-400/70" />
+                                    Ideas Management
+                                    <span className="text-xs font-normal text-white/30 ml-1">({allIdeas.length})</span>
+                                </h2>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr className="border-b border-white/8 text-[10px] uppercase tracking-widest text-white/30">
+                                            <th className="pb-3 px-1 font-semibold">Title</th>
+                                            <th className="pb-3 px-1 font-semibold">Difficulty</th>
+                                            <th className="pb-3 px-1 font-semibold">Created By</th>
+                                            <th className="pb-3 px-1 font-semibold">Tech Stack</th>
+                                            <th className="pb-3 px-1 font-semibold text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <AnimatePresence>
+                                            {allIdeas.map((idea) => {
+                                                const isConfirming = deletingIdeaId === idea.id;
+                                                const isDeleting   = deleteIdeaLoadingId === idea.id;
+                                                const diffColor = { EASY: "text-emerald-400 border-emerald-500/20 bg-emerald-500/10", MEDIUM: "text-amber-400 border-amber-500/20 bg-amber-500/10", HARD: "text-rose-400 border-rose-500/20 bg-rose-500/10" }[idea.difficulty] || "text-white/40 border-white/10 bg-white/5";
+                                                return (
+                                                    <motion.tr key={idea.id} layout exit={{ opacity: 0, height: 0 }} className="border-b border-white/5 hover:bg-white/[0.02] transition">
+                                                        <td className="py-3 px-1 text-sm font-medium text-white/80 max-w-[200px] truncate">{idea.title}</td>
+                                                        <td className="py-3 px-1">
+                                                            <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold border ${diffColor}`}>
+                                                                {idea.difficulty}
+                                                            </span>
+                                                        </td>
+                                                        <td className="py-3 px-1 text-[11px] text-white/40 truncate max-w-[120px]">{idea.createdBy}</td>
+                                                        <td className="py-3 px-1 text-[11px] text-white/30 truncate max-w-[140px]">{idea.techStack}</td>
+                                                        <td className="py-3 px-1 text-right">
+                                                            {isConfirming ? (
+                                                                <div className="flex items-center justify-end gap-2">
+                                                                    <button onClick={() => setDeletingIdeaId(null)} className="px-2.5 py-1 rounded-lg border border-white/10 text-[11px] text-white/40 hover:text-white transition">Cancel</button>
+                                                                    <button onClick={() => handleDeleteIdea(idea.id)} disabled={isDeleting} className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-500 text-[11px] font-semibold text-white hover:bg-red-400 disabled:opacity-60 transition">
+                                                                        {isDeleting ? <Loader2 size={11} className="animate-spin" /> : <Trash2 size={11} />}
+                                                                        {isDeleting ? "…" : "Delete"}
+                                                                    </button>
+                                                                </div>
+                                                            ) : (
+                                                                <button onClick={() => setDeletingIdeaId(idea.id)} className="flex items-center gap-1.5 ml-auto px-3 py-1.5 rounded-lg border border-white/8 bg-white/[0.03] text-[11px] text-white/35 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 transition">
+                                                                    <Trash2 size={11} /> Remove
+                                                                </button>
+                                                            )}
+                                                        </td>
+                                                    </motion.tr>
+                                                );
+                                            })}
+                                        </AnimatePresence>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* ── Implementations Management ─────────────────────── */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 14 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.45, delay: 0.35 }}
+                        className="mt-5"
+                    >
+                        <div className="rounded-2xl border border-white/10 bg-black/30 backdrop-blur-md p-5">
+                            <div className="flex items-center justify-between mb-5">
+                                <h2 className="text-sm font-semibold text-white/80 flex items-center gap-2">
+                                    <Code size={14} className="text-orange-400/70" />
+                                    Implementations Management
+                                    <span className="text-xs font-normal text-white/30 ml-1">({data?.topTrendingImplementations?.length ?? 0} trending)</span>
+                                </h2>
+                            </div>
+                            <div className="space-y-2">
+                                <AnimatePresence>
+                                    {data?.topTrendingImplementations?.map((impl, i) => {
+                                        const isConfirming = deletingImplId === impl.id;
+                                        const isDeleting   = deleteImplLoadingId === impl.id;
+                                        return (
+                                            <motion.div key={impl.id} layout exit={{ opacity: 0, height: 0 }} className="flex items-center justify-between gap-3 rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3 transition hover:bg-white/[0.05]">
+                                                <div className="flex items-center gap-3 min-w-0">
+                                                    <span className="text-[10px] font-bold text-white/25 w-4 shrink-0">{i + 1}</span>
+                                                    <div className="min-w-0">
+                                                        <p className="text-sm font-medium text-white/80 truncate">{impl.ideaTitle}</p>
+                                                        <div className="flex items-center gap-2 mt-0.5">
+                                                            {impl.language && <span className="text-[10px] font-mono text-white/30 bg-white/5 px-1.5 py-0.5 rounded">{impl.language}</span>}
+                                                            <span className="text-[11px] text-white/30">{impl.submittedBy}</span>
+                                                            <span className="text-[11px] text-amber-400/60">{impl.votes ?? 0} votes</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {isConfirming ? (
+                                                    <div className="flex items-center gap-2 shrink-0">
+                                                        <button onClick={() => setDeletingImplId(null)} className="px-2.5 py-1 rounded-lg border border-white/10 text-[11px] text-white/40 hover:text-white transition">Cancel</button>
+                                                        <button onClick={() => handleDeleteImpl(impl.id)} disabled={isDeleting} className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-500 text-[11px] font-semibold text-white hover:bg-red-400 disabled:opacity-60 transition">
+                                                            {isDeleting ? <Loader2 size={11} className="animate-spin" /> : <Trash2 size={11} />}
+                                                            {isDeleting ? "…" : "Delete"}
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <button onClick={() => setDeletingImplId(impl.id)} className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/8 bg-white/[0.03] text-[11px] text-white/35 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 transition">
+                                                        <Trash2 size={11} /> Remove
+                                                    </button>
+                                                )}
+                                            </motion.div>
+                                        );
+                                    })}
+                                </AnimatePresence>
+                            </div>
+                        </div>
+                    </motion.div>
+
                 </div>
-
-            </div>
-        </main>
-    );
-};
-
-// Reusable micro-component for the top stat cards
-const StatCard = ({ icon, label, value, color, delay }) => {
-    const colorMap = {
-        blue: "text-blue-400 group-hover:border-blue-500/50 border-white/5",
-        emerald: "text-emerald-400 group-hover:border-emerald-500/50 border-white/5",
-        violet: "text-violet-400 group-hover:border-violet-500/50 border-white/5",
-        amber: "text-amber-400 group-hover:border-amber-500/50 border-white/5",
-        rose: "text-rose-400 group-hover:border-rose-500/50 border-white/5",
-    };
-
-    const iconColor = {
-        blue: "text-blue-500",
-        emerald: "text-emerald-500",
-        violet: "text-violet-500",
-        amber: "text-amber-500",
-        rose: "text-rose-500",
-    };
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay }}
-            className={`p-6 bg-slate-900/50 backdrop-blur-md rounded-[1.5rem] border relative overflow-hidden group transition-colors ${colorMap[color]}`}
-        >
-            <div className={`absolute top-0 right-0 w-24 h-24 blur-[60px] opacity-20 transition-all bg-current ${iconColor[color]}`} />
-            <div className={`mb-4 w-10 h-10 flex flex-col items-center justify-center rounded-xl bg-slate-950/50 border border-white/5 ${iconColor[color]}`}>
-                {icon}
-            </div>
-            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-2">{label}</p>
-            <div className="text-4xl font-black text-white tracking-tighter">{value}</div>
-        </motion.div>
+            </main>
+        </>
     );
 };
 
